@@ -12,6 +12,7 @@ import { PricingPreview } from "@/components/sections/pricing-preview";
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
 import { FAQSection } from "@/components/sections/faq-section";
 import { CTASection } from "@/components/marketing/cta-section";
+import { SiteCheckerSection } from "@/components/sections/site-checker-section";
 
 export const metadata = buildMetadata({
   title: "Websites Built to Grow Your Business",
@@ -26,10 +27,7 @@ export default function HomePage() {
       <Hero />
       <TrustBar />
       <ProblemsSection />
-      <CTASection
-        title="Not sure what needs fixing?"
-        description="Get a free website audit and find out exactly what's holding your website back."
-      />
+      <SiteCheckerSection />
       <BeforeAfterSection />
       <ServicesSection />
       <CTASection

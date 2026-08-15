@@ -92,6 +92,26 @@ export interface Testimonial {
   image?: string;
 }
 
+export interface SeoCheckItem {
+  id: string;
+  label: string;
+  status: "pass" | "warn" | "fail";
+  detail: string;
+}
+
+export interface SeoCheckResult {
+  score: number;
+  finalUrl: string;
+  checks: SeoCheckItem[];
+}
+
+export interface NearbyBusiness {
+  name: string;
+  address: string;
+  rating?: number;
+  reviewCount?: number;
+}
+
 export interface BlogPost {
   slug: string;
   title: string;

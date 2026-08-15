@@ -4,7 +4,7 @@ export const siteConfig = {
   tagline: "Websites Built to Grow Your Business.",
   description:
     "Inovixa Digital designs and modernizes fast, high-performing websites for local businesses that want more calls, bookings, leads, and customers.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://inovixadigital.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://inovixadigital.com",
   email: "hello@inovixadigital.com",
   locale: "en_US",
 } as const;

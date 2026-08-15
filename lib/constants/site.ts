@@ -1,10 +1,29 @@
+const DEFAULT_SITE_URL = "https://inovixadigital.com";
+
+/**
+ * Falls back to the production domain for any value that isn't a usable
+ * absolute URL — unset, empty, whitespace, or missing a protocol — so a
+ * misconfigured NEXT_PUBLIC_SITE_URL env var (a common Vercel footgun) can
+ * never crash metadata generation.
+ */
+function resolveSiteUrl() {
+  const candidate = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!candidate) return DEFAULT_SITE_URL;
+
+  try {
+    return new URL(candidate).origin;
+  } catch {
+    return DEFAULT_SITE_URL;
+  }
+}
+
 export const siteConfig = {
   name: "Inovixa Digital",
   shortName: "Inovixa",
   tagline: "Websites Built to Grow Your Business.",
   description:
     "Inovixa Digital designs and modernizes fast, high-performing websites for local businesses that want more calls, bookings, leads, and customers.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://inovixadigital.com",
+  url: resolveSiteUrl(),
   email: "hello@inovixadigital.com",
   locale: "en_US",
 } as const;

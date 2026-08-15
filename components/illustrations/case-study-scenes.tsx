@@ -1,4 +1,5 @@
-import type { ComponentType, ReactNode } from "react";
+import type { ComponentType } from "react";
+import { SceneFrame } from "@/components/illustrations/scene-frame";
 
 /**
  * Original flat-vector scene illustrations for the concept case studies.
@@ -6,36 +7,6 @@ import type { ComponentType, ReactNode } from "react";
  * these are labeled concept projects) without pretending to be photography
  * of an actual business.
  */
-function SceneFrame({
-  gradientId,
-  from,
-  to,
-  children,
-}: {
-  gradientId: string;
-  from: string;
-  to: string;
-  children: ReactNode;
-}) {
-  return (
-    <svg
-      viewBox="0 0 400 250"
-      preserveAspectRatio="xMidYMid slice"
-      className="h-full w-full"
-      role="img"
-      aria-hidden="true"
-    >
-      <defs>
-        <linearGradient id={gradientId} x1="0" y1="0" x2="400" y2="250" gradientUnits="userSpaceOnUse">
-          <stop stopColor={from} />
-          <stop offset="1" stopColor={to} />
-        </linearGradient>
-      </defs>
-      <rect width="400" height="250" fill={`url(#${gradientId})`} />
-      {children}
-    </svg>
-  );
-}
 
 export function RoofingScene() {
   return (

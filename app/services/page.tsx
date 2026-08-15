@@ -1,7 +1,7 @@
 import { buildMetadata } from "@/lib/seo/metadata";
 import { services } from "@/lib/data/services";
 import { Section } from "@/components/ui/section";
-import { ServiceCard } from "@/components/cards/service-card";
+import { ServiceFeatureRow } from "@/components/marketing/service-feature-row";
 import { CTASection } from "@/components/marketing/cta-section";
 
 export const metadata = buildMetadata({
@@ -25,12 +25,14 @@ export default function ServicesPage() {
             your business get more customers.
           </p>
         </div>
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {services.map((service) => (
-            <ServiceCard key={service.slug} service={service} />
-          ))}
-        </div>
       </Section>
+
+      <Section tone="surface" className="space-y-16 sm:space-y-20">
+        {services.map((service, index) => (
+          <ServiceFeatureRow key={service.slug} service={service} reversed={index % 2 === 1} />
+        ))}
+      </Section>
+
       <CTASection
         title="Not sure which service fits your business?"
         description="Start with a free website audit and we'll recommend the right next step."

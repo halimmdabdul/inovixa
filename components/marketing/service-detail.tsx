@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { CTASection } from "@/components/marketing/cta-section";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seo/jsonld";
+import { serviceScenes } from "@/components/illustrations/service-scenes";
 
 export function ServiceDetail({ service }: { service: Service }) {
   const Icon = service.icon;
+  const Scene = serviceScenes[service.slug];
   const path = `/services/${service.slug}`;
 
   return (
@@ -41,6 +43,10 @@ export function ServiceDetail({ service }: { service: Service }) {
           <div className="mt-8">
             <Button href="/audit">Get Your Free Website Audit</Button>
           </div>
+        </div>
+
+        <div className="mx-auto mt-12 aspect-[16/7] max-w-4xl overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+          {Scene ? <Scene /> : null}
         </div>
       </Section>
 

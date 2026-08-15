@@ -29,11 +29,11 @@ export const siteConfig = {
 } as const;
 
 export const primaryNav = [
+  { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
   { label: "Work", href: "/work" },
-  { label: "Process", href: "/#how-it-works" },
   { label: "Pricing", href: "/pricing" },
-  { label: "About", href: "/about" },
+  { label: "About Us", href: "/about" },
 ] as const;
 
 export const footerNav = {

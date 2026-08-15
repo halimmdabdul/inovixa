@@ -34,6 +34,7 @@ export const primaryNav = [
   { label: "Work", href: "/work" },
   { label: "Pricing", href: "/pricing" },
   { label: "About Us", href: "/about" },
+  { label: "Contact Us", href: "/contact" },
 ] as const;
 
 export const footerNav = {

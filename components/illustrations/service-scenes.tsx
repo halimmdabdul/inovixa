@@ -1,25 +1,6 @@
 import type { ComponentType } from "react";
-import { MapPin, Plus, RefreshCw, ShieldCheck, type LucideIcon } from "lucide-react";
-import { SceneFrame } from "@/components/illustrations/scene-frame";
-
-function IconBadge({
-  icon: Icon,
-  tone = "teal",
-}: {
-  icon: LucideIcon;
-  tone?: "teal" | "blue";
-}) {
-  return (
-    <div
-      className={
-        "absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full shadow-md " +
-        (tone === "teal" ? "bg-brand-teal" : "bg-brand-blue")
-      }
-    >
-      <Icon className="h-5 w-5 text-white" aria-hidden="true" />
-    </div>
-  );
-}
+import { MapPin, Plus, RefreshCw, ShieldCheck } from "lucide-react";
+import { IconBadge, SceneFrame } from "@/components/illustrations/scene-frame";
 
 export function RedesignScene() {
   return (

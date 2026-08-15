@@ -1,36 +1,136 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Inovixa Digital
 
-## Getting Started
+Marketing website for Inovixa Digital, an agency that redesigns and builds
+websites for local service businesses.
 
-First, run the development server:
+## Project Overview
+
+Built with the Next.js App Router, this site includes:
+
+- Homepage, services, pricing, work, about, blog, contact, and legal pages
+- A free website audit funnel (`/audit`) and a contact form (`/contact`),
+  both with server-side validation, honeypot spam protection, and a
+  Resend-ready email notification pipeline
+- SEO metadata, JSON-LD structured data, `robots.ts`, and `sitemap.ts`
+- Marketing content centralized in `lib/data` for easy editing
+
+## Technology Stack
+
+- Next.js (App Router, TypeScript, Server Components)
+- Tailwind CSS v4
+- React Hook Form + Zod for form validation
+- Resend (email) — ready to enable
+- Supabase (lead storage) — ready to enable
+- Lucide React icons
+
+## Local Development
+
+```bash
+npm install
+npm run dev
+```
+
+The site runs at `http://localhost:3000`.
+
+## Environment Variables
+
+Copy `.env.example` to `.env.local` and fill in the values you have:
+
+```bash
+cp .env.example .env.local
+```
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | Recommended | Used for canonical URLs, sitemap, and metadata |
+| `RESEND_API_KEY` | Optional | Enables email notifications for form submissions |
+| `AUDIT_NOTIFICATION_EMAIL` | Optional | Recipient for website audit request notifications |
+| `CONTACT_NOTIFICATION_EMAIL` | Optional | Recipient for contact form notifications |
+| `NEXT_PUBLIC_GA_ID` | Optional | Enables Google Analytics |
+| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY` | Optional | Enables Supabase lead storage (see `lib/leads.ts`) |
+
+The site runs and forms still work with none of these set — submissions are
+simply logged instead of emailed or stored.
+
+## Running the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Building for Production
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm run start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Linting
 
-## Learn More
+```bash
+npm run lint
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Optimized for deployment on [Vercel](https://vercel.com). Connect the repo,
+set the environment variables above in the project settings, and deploy.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Forms
 
-## Deploy on Vercel
+- `/audit` and `/contact` use React Hook Form + Zod for client-side
+  validation and Next.js Server Actions (`app/audit/actions.ts`,
+  `app/contact/actions.ts`) for server-side validation, spam checks, and
+  email delivery.
+- Spam protection: a hidden honeypot field plus a submission-timing check
+  (see `lib/validation/spam-check.ts`). No CAPTCHA is required.
+- Email delivery uses Resend and only activates once `RESEND_API_KEY` is set
+  (`lib/email.ts`).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Analytics
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Google Analytics loads only when `NEXT_PUBLIC_GA_ID` is set
+(`components/analytics/google-analytics.tsx`). No other analytics providers
+are wired up yet.
+
+## SEO
+
+- Metadata is built per-page with `lib/seo/metadata.ts`.
+- Structured data (Organization, WebSite, Service, BreadcrumbList, FAQPage,
+  Article) lives in `lib/seo/jsonld.ts` and is rendered via
+  `components/seo/json-ld.tsx`.
+- `app/robots.ts` and `app/sitemap.ts` generate `robots.txt` and
+  `sitemap.xml` automatically from the site's route and content data.
+
+## Content Editing
+
+Marketing copy and structured content live in `lib/data/`:
+
+- `services.ts`, `industries.ts`, `pricing.ts`, `process.ts`, `problems.ts`,
+  `why-us.ts`, `faqs.ts`, `case-studies.ts`, `blog-posts.ts`,
+  `testimonials.ts`
+
+Editing these files updates the corresponding pages without touching
+component code. This structure is intentionally CMS-ready — a future
+migration to Sanity, Supabase, or another headless CMS only requires
+swapping how these files are populated, not the components that render them.
+
+## Future Supabase Setup
+
+Lead storage is stubbed in `lib/leads.ts` against a planned `website_audits`
+table. To enable it:
+
+1. Create a Supabase project and the `website_audits` table (see the shape
+   documented in `lib/leads.ts`).
+2. Install `@supabase/supabase-js`.
+3. Set `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`.
+4. Implement the insert call noted in `lib/leads.ts`.
+
+## Notes
+
+- Testimonials are hidden until real client quotes are added to
+  `lib/data/testimonials.ts`.
+- Work/case studies are currently labeled concept projects for fictional
+  businesses. No fabricated metrics are included.
+- `/privacy` and `/terms` are general starter templates and should be
+  reviewed by a qualified professional before launch.

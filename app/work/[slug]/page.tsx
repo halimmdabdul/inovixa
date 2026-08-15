@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { CTASection } from "@/components/marketing/cta-section";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { caseStudyScenes } from "@/components/illustrations/case-study-scenes";
 
 export function generateStaticParams() {
   return caseStudies.map((project) => ({ slug: project.slug }));
@@ -50,6 +51,8 @@ export default async function CaseStudyPage({
 
   if (!project) notFound();
 
+  const Scene = caseStudyScenes[project.slug];
+
   return (
     <>
       <JsonLd
@@ -72,8 +75,8 @@ export default async function CaseStudyPage({
           <p className="mt-5 text-lg leading-relaxed text-slate-600">{project.summary}</p>
         </div>
 
-        <div className="mx-auto mt-12 flex aspect-[16/7] max-w-4xl items-center justify-center rounded-2xl bg-gradient-to-br from-slate-100 to-blue-50">
-          <span className="text-3xl font-bold tracking-tight text-navy/20">{project.title}</span>
+        <div className="mx-auto mt-12 aspect-[16/7] max-w-4xl overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+          {Scene ? <Scene /> : null}
         </div>
       </Section>
 

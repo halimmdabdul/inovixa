@@ -9,7 +9,7 @@ import { WhyInovixa } from "@/components/sections/why-inovixa";
 import { HowItWorks } from "@/components/sections/how-it-works";
 import { IndustriesSection } from "@/components/sections/industries-section";
 import { PricingPreview } from "@/components/sections/pricing-preview";
-import { TestimonialsSection } from "@/components/sections/testimonials-section";
+import { ExpectationsSection } from "@/components/sections/expectations-section";
 import { FAQSection } from "@/components/sections/faq-section";
 import { CTASection } from "@/components/marketing/cta-section";
 import { SiteCheckerSection } from "@/components/sections/site-checker-section";
@@ -45,7 +45,7 @@ export default function HomePage() {
       <HowItWorks />
       <IndustriesSection />
       <PricingPreview />
-      <TestimonialsSection />
+      <ExpectationsSection />
       <CTASection
         title="Find Out What's Holding Your Website Back"
         description="Get a practical review of your website's design, mobile experience, performance, SEO foundations, and conversion opportunities. No obligation."

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
-import { primaryNav } from "@/lib/constants/site";
+import { primaryNav, siteConfig } from "@/lib/constants/site";
 import { Logo } from "@/components/navigation/logo";
 import { MobileNav } from "@/components/navigation/mobile-nav";
 import { Button } from "@/components/ui/button";
@@ -46,7 +46,15 @@ export function Navbar() {
               </Link>
             ))}
           </nav>
-          <div className="hidden md:block">
+          <div className="hidden items-center gap-4 md:flex">
+            <a
+              href={siteConfig.bookingCallUrl}
+              target={siteConfig.isBookingCallExternal ? "_blank" : undefined}
+              rel={siteConfig.isBookingCallExternal ? "noopener noreferrer" : undefined}
+              className="text-sm font-medium text-slate-600 transition-colors hover:text-navy"
+            >
+              Book a 15-Min Call
+            </a>
             <Button href="/audit" size="sm">
               Free Website Audit
             </Button>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { X } from "lucide-react";
-import { primaryNav } from "@/lib/constants/site";
+import { primaryNav, siteConfig } from "@/lib/constants/site";
 import { Button } from "@/components/ui/button";
 
 export function MobileNav({
@@ -45,10 +45,19 @@ export function MobileNav({
             </Link>
           ))}
         </nav>
-        <div className="mt-8">
+        <div className="mt-8 space-y-3">
           <Button href="/audit" className="w-full" onClick={onClose}>
             Free Website Audit
           </Button>
+          <a
+            href={siteConfig.bookingCallUrl}
+            target={siteConfig.isBookingCallExternal ? "_blank" : undefined}
+            rel={siteConfig.isBookingCallExternal ? "noopener noreferrer" : undefined}
+            onClick={onClose}
+            className="block text-center text-sm font-medium text-slate-600 hover:text-navy"
+          >
+            Book a 15-Min Call
+          </a>
         </div>
       </div>
     </div>

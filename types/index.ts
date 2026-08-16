@@ -10,6 +10,7 @@ export interface Service {
   ctaLabel: string;
   features: string[];
   idealFor: string[];
+  faqs: FAQItem[];
 }
 
 export interface Problem {

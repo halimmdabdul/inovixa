@@ -3,6 +3,7 @@ import { getServiceBySlug } from "@/lib/data/services";
 import { ServiceDetail } from "@/components/marketing/service-detail";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { CTASection } from "@/components/marketing/cta-section";
 import { carePlans } from "@/lib/data/pricing";
 
 const service = getServiceBySlug("website-maintenance")!;
@@ -44,6 +45,12 @@ export default function WebsiteMaintenancePage() {
           ))}
         </div>
       </Section>
+      <CTASection
+        title="Not sure if this is the right fit?"
+        description="Get a free website audit and we'll recommend the best next step for your business."
+        secondaryHref="/pricing"
+        secondaryLabel="View Pricing"
+      />
     </>
   );
 }

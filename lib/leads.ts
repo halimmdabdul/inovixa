@@ -1,4 +1,5 @@
 import "server-only";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export type LeadStatus =
   | "new"
@@ -10,38 +11,64 @@ export type LeadStatus =
 
 export type LeadSource = "website_audit" | "contact_form";
 
-export interface WebsiteAuditLead {
+/**
+ * Shared shape for the `leads` table, covering both the audit and contact
+ * funnels. Fields that only apply to one funnel are left undefined for the
+ * other rather than using two separate tables, so the admin dashboard can
+ * show one unified list.
+ */
+export interface Lead {
   name: string;
   businessName: string;
-  businessEmail: string;
+  email: string;
   phone?: string;
-  websiteUrl: string;
-  industry: string;
-  websiteGoal: string;
-  websiteProblem: string;
+  websiteUrl?: string;
+  industry?: string;
+  websiteGoal?: string;
+  websiteProblem?: string;
+  serviceInterest?: string;
+  budget?: string;
   message?: string;
   status: LeadStatus;
   source: LeadSource;
 }
 
 /**
- * Persists a lead once Supabase is connected. This table shape mirrors the
- * planned `website_audits` schema. Until NEXT_PUBLIC_SUPABASE_URL and
- * SUPABASE_SERVICE_ROLE_KEY are set, leads are only logged and delivered by
- * email (see lib/email.ts) — forms still work end to end without Supabase.
+ * Persists a lead to Supabase once it's configured. Until
+ * NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set, this only
+ * logs the attempt — forms still work end to end without Supabase, since
+ * the audit/contact server actions also send an email notification
+ * independently of this call. See supabase/schema.sql for the table
+ * definition this insert expects.
  */
-export async function storeLead(lead: WebsiteAuditLead) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+export async function storeLead(lead: Lead) {
+  const supabase = createAdminClient();
 
-  if (!supabaseUrl || !serviceRoleKey) {
-    console.info("[leads] Supabase not configured, skipping storage for lead:", lead.businessEmail);
+  if (!supabase) {
+    console.info("[leads] Supabase not configured, skipping storage for lead:", lead.email);
     return { stored: false as const };
   }
 
-  // Once the @supabase/supabase-js package is added, insert into `website_audits` here:
-  // const supabase = createClient(supabaseUrl, serviceRoleKey);
-  // await supabase.from("website_audits").insert(lead);
+  const { error } = await supabase.from("leads").insert({
+    name: lead.name,
+    business_name: lead.businessName,
+    email: lead.email,
+    phone: lead.phone || null,
+    website_url: lead.websiteUrl || null,
+    industry: lead.industry || null,
+    website_goal: lead.websiteGoal || null,
+    website_problem: lead.websiteProblem || null,
+    service_interest: lead.serviceInterest || null,
+    budget: lead.budget || null,
+    message: lead.message || null,
+    status: lead.status,
+    source: lead.source,
+  });
 
-  return { stored: false as const };
+  if (error) {
+    console.error("[leads] Failed to store lead", error);
+    return { stored: false as const };
+  }
+
+  return { stored: true as const };
 }

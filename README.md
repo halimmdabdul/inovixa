@@ -13,6 +13,8 @@ Built with the Next.js App Router, this site includes:
   Resend-ready email notification pipeline
 - A homepage "site checker" tool: visitors submit a URL and get a real,
   automated technical SEO score
+- A Supabase-backed `/admin` dashboard (behind login) for viewing leads
+  submitted through the audit and contact forms
 - SEO metadata, JSON-LD structured data, `robots.ts`, and `sitemap.ts`
 - Marketing content centralized in `lib/data` for easy editing
 
@@ -22,7 +24,7 @@ Built with the Next.js App Router, this site includes:
 - Tailwind CSS v4
 - React Hook Form + Zod for form validation
 - Resend (email) — ready to enable
-- Supabase (lead storage) — ready to enable
+- Supabase (lead storage + admin auth) — ready to enable
 - Lucide React icons
 
 ## Local Development
@@ -136,16 +138,55 @@ component code. This structure is intentionally CMS-ready — a future
 migration to Sanity, Supabase, or another headless CMS only requires
 swapping how these files are populated, not the components that render them.
 
-## Future Supabase Setup
+## Admin Dashboard
 
-Lead storage is stubbed in `lib/leads.ts` against a planned `website_audits`
-table. To enable it:
+`/admin` is a login-protected dashboard for viewing leads submitted through
+the `/audit` and `/contact` forms. It's built on Supabase Auth + Postgres
+and does nothing until you connect a Supabase project — until then, `/admin`
+just redirects to a login page that says so.
 
-1. Create a Supabase project and the `website_audits` table (see the shape
-   documented in `lib/leads.ts`).
-2. Install `@supabase/supabase-js`.
-3. Set `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`.
-4. Implement the insert call noted in `lib/leads.ts`.
+### Setup
+
+1. **Create a Supabase project** at [supabase.com](https://supabase.com) (the
+   free tier is enough for this).
+2. **Run the schema.** In the Supabase dashboard, open SQL Editor -> New
+   query, paste the contents of `supabase/schema.sql`, and run it. This
+   creates the `leads` table with row-level security enabled — the anon/
+   authenticated roles can only `SELECT`, never insert, so new leads can
+   only be written by the server (see below).
+3. **Create your admin user.** Dashboard -> Authentication -> Users -> Add
+   user. Use email + password (this is the login you'll use at
+   `/admin/login`). Email confirmation can be skipped for an internal admin
+   account.
+4. **Set environment variables** (locally in `.env.local`, and in Vercel
+   under Project Settings -> Environment Variables):
+   - `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` — from
+     Project Settings -> API in the Supabase dashboard. Safe to expose to
+     the browser; RLS controls what they can actually access.
+   - `SUPABASE_SERVICE_ROLE_KEY` — also from Project Settings -> API. This
+     one bypasses RLS entirely and must **never** be exposed to the
+     browser or committed — it's what lets the audit/contact server
+     actions insert leads despite the table having no public insert
+     policy.
+5. Visit `/admin/login` and sign in with the user you created in step 3.
+
+### How it fits together
+
+- `lib/supabase/client.ts` / `lib/supabase/server.ts` — anon-key clients for
+  the browser (login form) and for Server Components/Actions running with
+  the signed-in admin's session, subject to RLS.
+- `lib/supabase/admin.ts` — the service-role client, used only by
+  `lib/leads.ts` to insert new leads from public form submissions. Never
+  used to read data back out for a request.
+- `proxy.ts` (Next.js 16 renamed `middleware.ts` to `proxy.ts`) — refreshes
+  the Supabase session cookie and redirects unauthenticated requests to
+  `/admin/*` back to `/admin/login`.
+- `/admin` is excluded from `robots.ts` and never linked from the public
+  site or sitemap.
+
+Lead storage runs independently of email notifications — if
+`RESEND_API_KEY` isn't set, leads are still stored (once Supabase is
+configured) and you'll just see them in `/admin` instead of your inbox.
 
 ## Notes
 

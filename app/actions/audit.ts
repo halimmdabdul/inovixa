@@ -36,7 +36,7 @@ export async function submitAuditRequest(
   await storeLead({
     name: data.name,
     businessName: data.businessName,
-    businessEmail: data.businessEmail,
+    email: data.businessEmail,
     phone: data.phone || undefined,
     websiteUrl: data.websiteUrl,
     industry: data.industry,

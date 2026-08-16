@@ -3,6 +3,7 @@
 import { contactFormSchema } from "@/lib/validation/contact";
 import { isLikelySpam } from "@/lib/validation/spam-check";
 import { sendNotificationEmail } from "@/lib/email";
+import { storeLead } from "@/lib/leads";
 
 export interface ContactSubmissionResult {
   success: boolean;
@@ -29,6 +30,19 @@ export async function submitContactRequest(
       message: "Thanks for reaching out! We'll get back to you shortly.",
     };
   }
+
+  await storeLead({
+    name: data.name,
+    businessName: data.businessName,
+    email: data.email,
+    phone: data.phone || undefined,
+    websiteUrl: data.websiteUrl || undefined,
+    serviceInterest: data.serviceInterest,
+    budget: data.budget,
+    message: data.projectDetails,
+    status: "new",
+    source: "contact_form",
+  });
 
   await sendNotificationEmail({
     to: process.env.CONTACT_NOTIFICATION_EMAIL,

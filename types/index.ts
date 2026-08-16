@@ -113,6 +113,34 @@ export interface SeoCheckResult {
   checks: SeoCheckItem[];
 }
 
+export type LeadSource = "website_audit" | "contact_form";
+
+export type LeadStatus =
+  | "new"
+  | "contacted"
+  | "qualified"
+  | "proposal_sent"
+  | "won"
+  | "lost";
+
+export interface LeadRow {
+  id: string;
+  created_at: string;
+  source: LeadSource;
+  status: LeadStatus;
+  name: string;
+  business_name: string;
+  email: string;
+  phone: string | null;
+  website_url: string | null;
+  industry: string | null;
+  website_goal: string | null;
+  website_problem: string | null;
+  service_interest: string | null;
+  budget: string | null;
+  message: string | null;
+}
+
 export interface BlogPost {
   slug: string;
   title: string;

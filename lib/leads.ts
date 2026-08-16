@@ -1,15 +1,8 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
+import type { LeadSource, LeadStatus } from "@/types";
 
-export type LeadStatus =
-  | "new"
-  | "contacted"
-  | "qualified"
-  | "proposal_sent"
-  | "won"
-  | "lost";
-
-export type LeadSource = "website_audit" | "contact_form";
+export type { LeadSource, LeadStatus };
 
 /**
  * Shared shape for the `leads` table, covering both the audit and contact

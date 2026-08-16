@@ -9,7 +9,7 @@ import { CTASection } from "@/components/marketing/cta-section";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { caseStudyScenes } from "@/components/illustrations/case-study-scenes";
-import { BrowserMockup } from "@/components/hero/browser-mockup";
+import { BrowserMockup, type NewSiteCopy, type OldSiteCopy } from "@/components/hero/browser-mockup";
 import { ImprovementsList } from "@/components/marketing/improvements-list";
 
 export function generateStaticParams() {
@@ -37,22 +37,77 @@ function projectDomain(title: string) {
 }
 
 /**
- * Flavors the "old site" mockup per industry so the before/after comparison
- * feels specific and relatable, without using any real business's actual
- * website — these are original placeholder scenes, not screenshots.
+ * Flavors the before/after mockups with real (if generic) headline and body
+ * copy per industry so the comparison feels specific and relatable, without
+ * using any real business's actual website — this is original placeholder
+ * copy, not a screenshot.
  */
-const oldSiteFlavor: Record<string, { bannerText: string; navItems: string[] }> = {
+const mockupCopy: Record<string, { old: OldSiteCopy; new: NewSiteCopy }> = {
   Roofing: {
-    bannerText: "☎ 24-HR Emergency Roof Repair ☎",
-    navItems: ["Home", "Roofing", "Repairs", "Storm Damage", "Contact"],
+    old: {
+      bannerText: "☎ 24-HR Emergency Roof Repair ☎",
+      navItems: ["Home", "Roofing", "Repairs", "Storm Damage", "Contact"],
+      headline: "ABC Roofing Co. - Quality Service",
+      paragraphs: [
+        "We have been serving the area for many years.",
+        "Contact us today for all your roofing needs.",
+      ],
+      sidebarTitle: "Our Services",
+      sidebarText: "Repairs, replacement, inspections.",
+    },
+    new: {
+      brand: "SummitRidge",
+      navLinks: ["Services", "Reviews"],
+      ctaText: "Get Estimate",
+      heroHeadline: "Fast, Reliable Roof Repairs You Can Trust",
+      heroSubtext: "Free estimates. Same-week scheduling available.",
+      heroButtonText: "Get Free Estimate",
+      cards: ["Roof Repair", "Storm Damage", "Free Inspection"],
+    },
   },
   Dental: {
-    bannerText: "★ New Patients Welcome! ★",
-    navItems: ["Home", "About", "Services", "Insurance", "Contact"],
+    old: {
+      bannerText: "★ New Patients Welcome! ★",
+      navItems: ["Home", "About", "Services", "Insurance", "Contact"],
+      headline: "Welcome To Our Practice",
+      paragraphs: [
+        "We accept most major insurance plans.",
+        "Call our office to schedule your visit.",
+      ],
+      sidebarTitle: "Office Hours",
+      sidebarText: "Mon-Fri, 9am-5pm.",
+    },
+    new: {
+      brand: "Brightview",
+      navLinks: ["Services", "Team"],
+      ctaText: "Book Now",
+      heroHeadline: "Gentle Dental Care for the Whole Family",
+      heroSubtext: "New patients welcome. Most insurance accepted.",
+      heroButtonText: "Book an Appointment",
+      cards: ["Cleanings", "Whitening", "Emergency Care"],
+    },
   },
   "Real Estate": {
-    bannerText: "★ Serving The Area Since 1998 ★",
-    navItems: ["Home", "Listings", "Agents", "Sell", "Contact"],
+    old: {
+      bannerText: "★ Serving The Area Since 1998 ★",
+      navItems: ["Home", "Listings", "Agents", "Sell", "Contact"],
+      headline: "Welcome To Our Realty",
+      paragraphs: [
+        "Browse our current listings below.",
+        "Call one of our agents today.",
+      ],
+      sidebarTitle: "Featured Listing",
+      sidebarText: "3 bed, 2 bath home.",
+    },
+    new: {
+      brand: "Harborline",
+      navLinks: ["Listings", "Agents"],
+      ctaText: "Contact",
+      heroHeadline: "Find Your Next Home With Confidence",
+      heroSubtext: "Local expertise. Modern, up-to-date listings.",
+      heroButtonText: "View Listings",
+      cards: ["Buy", "Sell", "Find an Agent"],
+    },
   },
 };
 
@@ -68,7 +123,7 @@ export default async function CaseStudyPage({
 
   const Scene = caseStudyScenes[project.slug];
   const domain = projectDomain(project.title);
-  const flavor = oldSiteFlavor[project.industry];
+  const copy = mockupCopy[project.industry];
 
   return (
     <>
@@ -106,16 +161,11 @@ export default async function CaseStudyPage({
         />
         <div className="mx-auto mt-12 grid max-w-5xl gap-8 lg:grid-cols-2">
           <div>
-            <BrowserMockup
-              variant="old"
-              label={domain}
-              oldBannerText={flavor?.bannerText}
-              oldNavItems={flavor?.navItems}
-            />
+            <BrowserMockup variant="old" label={domain} oldCopy={copy?.old} />
             <p className="mt-3 text-center text-sm text-slate-500">Before</p>
           </div>
           <div>
-            <BrowserMockup variant="new" label={domain} />
+            <BrowserMockup variant="new" label={domain} newCopy={copy?.new} />
             <p className="mt-3 text-center text-sm text-slate-500">After</p>
           </div>
         </div>

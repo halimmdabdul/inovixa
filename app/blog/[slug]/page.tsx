@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { CTASection } from "@/components/marketing/cta-section";
 import { JsonLd } from "@/components/seo/json-ld";
 import { articleJsonLd, breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { blogCategoryScenes } from "@/components/illustrations/blog-scenes";
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
@@ -38,6 +39,8 @@ export default async function BlogPostPage({
   const post = getBlogPostBySlug(slug);
 
   if (!post) notFound();
+
+  const Scene = blogCategoryScenes[post.category];
 
   return (
     <>
@@ -75,6 +78,10 @@ export default async function BlogPostPage({
           <h1 className="mt-4 text-3xl font-bold tracking-tight text-navy sm:text-4xl">
             {post.title}
           </h1>
+
+          <div className="mt-8 aspect-[16/9] overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+            {Scene ? <Scene /> : null}
+          </div>
 
           <div className="prose-content mt-8 space-y-5">
             {post.content.map((paragraph, index) => (

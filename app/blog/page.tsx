@@ -3,6 +3,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { blogPosts } from "@/lib/data/blog-posts";
 import { Section } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
+import { blogCategoryScenes } from "@/components/illustrations/blog-scenes";
 
 export const metadata = buildMetadata({
   title: "Blog",
@@ -22,27 +23,29 @@ export default function BlogPage() {
         </p>
       </div>
 
-      <div className="mx-auto mt-14 grid max-w-4xl gap-6">
-        {blogPosts.map((post) => (
-          <Link
-            key={post.slug}
-            href={`/blog/${post.slug}`}
-            className="group flex flex-col gap-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md sm:flex-row sm:items-center sm:justify-between sm:p-7"
-          >
-            <div>
-              <div className="flex items-center gap-3">
-                <Badge tone="blue">{post.category}</Badge>
-                <span className="text-xs text-slate-400">{post.readingTime}</span>
+      <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {blogPosts.map((post) => {
+          const Scene = blogCategoryScenes[post.category];
+          return (
+            <Link
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md"
+            >
+              <div className="aspect-[16/10] overflow-hidden">{Scene ? <Scene /> : null}</div>
+              <div className="flex flex-1 flex-col p-6">
+                <div className="flex items-center gap-3">
+                  <Badge tone="blue">{post.category}</Badge>
+                  <span className="text-xs text-slate-400">{post.readingTime}</span>
+                </div>
+                <h2 className="mt-3 text-lg font-semibold text-navy group-hover:text-brand-blue">
+                  {post.title}
+                </h2>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{post.excerpt}</p>
               </div>
-              <h2 className="mt-2.5 text-lg font-semibold text-navy group-hover:text-brand-blue">
-                {post.title}
-              </h2>
-              <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-slate-600">
-                {post.excerpt}
-              </p>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </div>
     </Section>
   );

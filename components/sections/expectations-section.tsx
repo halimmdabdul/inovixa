@@ -8,7 +8,6 @@ export function ExpectationsSection() {
       <SectionHeading
         eyebrow="Our Commitment"
         title="What You Can Expect Working With Us"
-        description="We're a new agency without a long client history to point to yet. Here's what we commit to on every project instead."
       />
       <div className="mt-12 flex flex-wrap justify-center gap-6">
         {expectations.map((item) => (

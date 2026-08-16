@@ -5,6 +5,10 @@ import { caseStudies } from "@/lib/data/case-studies";
 import { blogPosts } from "@/lib/data/blog-posts";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  // No lastModified on static/service/work routes — their content doesn't
+  // carry a tracked "last changed" date, and stamping every build with
+  // new Date() would falsely signal to crawlers that these pages change
+  // daily, which dilutes rather than helps crawl prioritization.
   const staticRoutes = [
     "",
     "/services",
@@ -19,17 +23,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/terms",
   ].map((path) => ({
     url: `${siteConfig.url}${path}`,
-    lastModified: new Date(),
   }));
 
   const serviceRoutes = services.map((service) => ({
     url: `${siteConfig.url}/services/${service.slug}`,
-    lastModified: new Date(),
   }));
 
   const workRoutes = caseStudies.map((project) => ({
     url: `${siteConfig.url}/work/${project.slug}`,
-    lastModified: new Date(),
   }));
 
   const blogRoutes = blogPosts.map((post) => ({

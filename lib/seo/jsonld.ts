@@ -1,5 +1,15 @@
 import { siteConfig } from "@/lib/constants/site";
+import { founder } from "@/lib/data/founder";
 import type { FAQItem } from "@/types";
+
+/**
+ * Founder social links are optional (see lib/data/founder.ts) — only include
+ * a sameAs entry once a real URL exists, rather than publishing empty or
+ * placeholder links in structured data.
+ */
+function founderSameAs() {
+  return [founder.linkedinUrl, founder.githubUrl].filter(Boolean);
+}
 
 export function organizationJsonLd() {
   return {
@@ -7,10 +17,23 @@ export function organizationJsonLd() {
     "@type": "ProfessionalService",
     name: siteConfig.name,
     url: siteConfig.url,
+    logo: `${siteConfig.url}/apple-icon`,
     description: siteConfig.description,
     email: siteConfig.email,
     areaServed: ["US", "GB"],
     priceRange: "$$",
+    founder: {
+      "@type": "Person",
+      name: founder.name,
+      jobTitle: founder.title,
+      ...(founderSameAs().length > 0 ? { sameAs: founderSameAs() } : {}),
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      email: siteConfig.email,
+      contactType: "customer service",
+    },
+    ...(founderSameAs().length > 0 ? { sameAs: founderSameAs() } : {}),
   };
 }
 

@@ -8,7 +8,7 @@ export function SiteCheckerSection() {
       <SectionHeading
         eyebrow="Free Tool"
         title="See Your SEO Score in Seconds"
-        description="Enter your website to get an instant technical SEO scan, plus a look at other businesses like yours nearby."
+        description="Enter your website to get an instant, automated technical SEO scan."
       />
       <div className="mx-auto mt-12 max-w-2xl">
         <SiteCheckerForm />

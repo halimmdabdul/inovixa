@@ -113,13 +113,6 @@ export interface SeoCheckResult {
   checks: SeoCheckItem[];
 }
 
-export interface NearbyBusiness {
-  name: string;
-  address: string;
-  rating?: number;
-  reviewCount?: number;
-}
-
 export interface BlogPost {
   slug: string;
   title: string;

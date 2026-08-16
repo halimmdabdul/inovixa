@@ -12,8 +12,7 @@ Built with the Next.js App Router, this site includes:
   both with server-side validation, honeypot spam protection, and a
   Resend-ready email notification pipeline
 - A homepage "site checker" tool: visitors submit a URL and get a real,
-  automated technical SEO score, plus an optional nearby-businesses lookup
-  via Google Places
+  automated technical SEO score
 - SEO metadata, JSON-LD structured data, `robots.ts`, and `sitemap.ts`
 - Marketing content centralized in `lib/data` for easy editing
 
@@ -51,7 +50,6 @@ cp .env.example .env.local
 | `CONTACT_NOTIFICATION_EMAIL` | Optional | Recipient for contact form notifications |
 | `NEXT_PUBLIC_GA_ID` | Optional | Enables Google Analytics |
 | `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY` | Optional | Enables Supabase lead storage (see `lib/leads.ts`) |
-| `GOOGLE_PLACES_API_KEY` | Optional | Enables the nearby-businesses list in the site checker tool (see `lib/places.ts`) |
 
 The site runs and forms still work with none of these set — submissions are
 simply logged instead of emailed or stored.
@@ -106,12 +104,9 @@ lets a visitor submit a URL and get back a real technical SEO score:
   speed, and indexability) in `lib/seo/score.ts`. Nothing here is
   fabricated — it's an automated technical scan, and the UI says so.
 - A lightweight in-memory rate limiter (`lib/rate-limit.ts`) throttles
-  repeated requests per IP, since this endpoint fetches arbitrary URLs and
-  can call a paid API. It's best-effort per serverless instance; swap in
-  Vercel KV/Upstash for real distributed rate limiting in production.
-- The "other businesses near you" list only appears once
-  `GOOGLE_PLACES_API_KEY` is set (`lib/places.ts`); otherwise that section
-  is hidden and only the SEO score is shown.
+  repeated requests per IP, since this endpoint fetches arbitrary URLs.
+  It's best-effort per serverless instance; swap in Vercel KV/Upstash for
+  real distributed rate limiting in production.
 
 ## Analytics
 

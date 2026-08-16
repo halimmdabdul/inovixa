@@ -1,5 +1,5 @@
-import { AlertTriangle, ArrowRight, CheckCircle2, MapPin, RotateCcw, Star, XCircle } from "lucide-react";
-import type { NearbyBusiness, SeoCheckResult } from "@/types";
+import { AlertTriangle, ArrowRight, CheckCircle2, RotateCcw, XCircle } from "lucide-react";
+import type { SeoCheckResult } from "@/types";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -23,17 +23,9 @@ function scoreTone(score: number) {
 
 export function SiteCheckerResults({
   seo,
-  nearbyBusinesses,
-  nearbyAvailable,
-  industry,
-  location,
   onReset,
 }: {
   seo: SeoCheckResult;
-  nearbyBusinesses: NearbyBusiness[];
-  nearbyAvailable: boolean;
-  industry: string;
-  location: string;
   onReset: () => void;
 }) {
   const tone = scoreTone(seo.score);
@@ -79,40 +71,6 @@ export function SiteCheckerResults({
           more depth.
         </p>
       </div>
-
-      {nearbyAvailable && nearbyBusinesses.length > 0 ? (
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
-          <div className="flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-brand-blue" aria-hidden="true" />
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Other {industry} Businesses Near {location}
-            </p>
-          </div>
-          <ul className="mt-5 space-y-4">
-            {nearbyBusinesses.map((business) => (
-              <li
-                key={`${business.name}-${business.address}`}
-                className="flex items-start justify-between gap-4 border-b border-slate-100 pb-4 last:border-0 last:pb-0"
-              >
-                <div>
-                  <p className="text-sm font-semibold text-navy">{business.name}</p>
-                  <p className="text-sm text-slate-500">{business.address}</p>
-                </div>
-                {business.rating ? (
-                  <div className="flex shrink-0 items-center gap-1 text-sm text-slate-600">
-                    <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" aria-hidden="true" />
-                    {business.rating}
-                    {business.reviewCount ? (
-                      <span className="text-slate-400">({business.reviewCount})</span>
-                    ) : null}
-                  </div>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-4 text-xs text-slate-400">Local business data provided by Google.</p>
-        </div>
-      ) : null}
 
       <div className="flex flex-col items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center sm:p-8">
         <p className="text-sm text-slate-600">

@@ -4,14 +4,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, ScanSearch } from "lucide-react";
-import {
-  industryOptions,
-  siteCheckerSchema,
-  type SiteCheckerValues,
-} from "@/lib/validation/site-checker";
+import { siteCheckerSchema, type SiteCheckerValues } from "@/lib/validation/site-checker";
 import { runSiteCheckup, type SiteCheckupResult } from "@/app/actions/site-checker";
 import { currentTimestamp } from "@/lib/form-timestamp";
-import { InputField, SelectField } from "@/components/ui/form-field";
+import { InputField } from "@/components/ui/form-field";
 import { Button } from "@/components/ui/button";
 import { SiteCheckerResults } from "@/components/tools/site-checker-results";
 
@@ -20,8 +16,6 @@ type FormFields = Omit<SiteCheckerValues, "formRenderedAt">;
 export function SiteCheckerForm() {
   const [result, setResult] = useState<SiteCheckupResult | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [submittedIndustry, setSubmittedIndustry] = useState("");
-  const [submittedLocation, setSubmittedLocation] = useState("");
 
   // Captured once on first render for the submission-timing spam check — see
   // lib/validation/spam-check.ts. A lazy initializer runs exactly once, so
@@ -45,8 +39,6 @@ export function SiteCheckerForm() {
       setErrorMessage(response.message ?? "Something went wrong. Please try again.");
       return;
     }
-    setSubmittedIndustry(values.industry);
-    setSubmittedLocation(values.location);
     setResult(response);
   }
 
@@ -54,10 +46,6 @@ export function SiteCheckerForm() {
     return (
       <SiteCheckerResults
         seo={result.seo}
-        nearbyBusinesses={result.nearbyBusinesses ?? []}
-        nearbyAvailable={result.nearbyAvailable ?? false}
-        industry={submittedIndustry}
-        location={submittedLocation}
         onReset={() => {
           setResult(null);
           reset({ companyWebsite: "" });
@@ -83,31 +71,13 @@ export function SiteCheckerForm() {
         />
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div className="sm:col-span-2">
-          <InputField
-            label="Website URL"
-            id="checkerWebsiteUrl"
-            placeholder="https://yourbusiness.com"
-            error={errors.websiteUrl?.message}
-            {...register("websiteUrl")}
-          />
-        </div>
-        <SelectField
-          label="Industry"
-          id="checkerIndustry"
-          options={industryOptions}
-          error={errors.industry?.message}
-          {...register("industry")}
-        />
-        <InputField
-          label="City or ZIP code"
-          id="checkerLocation"
-          placeholder="e.g. Austin, TX"
-          error={errors.location?.message}
-          {...register("location")}
-        />
-      </div>
+      <InputField
+        label="Website URL"
+        id="checkerWebsiteUrl"
+        placeholder="https://yourbusiness.com"
+        error={errors.websiteUrl?.message}
+        {...register("websiteUrl")}
+      />
 
       {errorMessage ? (
         <p role="alert" className="mt-4 text-sm text-red-600">

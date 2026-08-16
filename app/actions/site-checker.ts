@@ -6,15 +6,12 @@ import { isLikelySpam } from "@/lib/validation/spam-check";
 import { isRateLimited } from "@/lib/rate-limit";
 import { fetchHtmlSafely } from "@/lib/seo/fetch-safely";
 import { scoreSeo } from "@/lib/seo/score";
-import { findNearbyBusinesses } from "@/lib/places";
-import type { NearbyBusiness, SeoCheckResult } from "@/types";
+import type { SeoCheckResult } from "@/types";
 
 export interface SiteCheckupResult {
   success: boolean;
   message?: string;
   seo?: SeoCheckResult;
-  nearbyBusinesses?: NearbyBusiness[];
-  nearbyAvailable?: boolean;
 }
 
 export async function runSiteCheckup(values: unknown): Promise<SiteCheckupResult> {
@@ -42,22 +39,13 @@ export async function runSiteCheckup(values: unknown): Promise<SiteCheckupResult
     };
   }
 
-  let seo: SeoCheckResult;
   try {
     const { html, finalUrl, elapsedMs } = await fetchHtmlSafely(data.websiteUrl);
-    seo = scoreSeo(html, finalUrl, elapsedMs);
+    const seo = scoreSeo(html, finalUrl, elapsedMs);
+    return { success: true, seo };
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "We couldn't check that website. Please try again.";
     return { success: false, message };
   }
-
-  const { available, results } = await findNearbyBusinesses(`${data.industry} in ${data.location}`);
-
-  return {
-    success: true,
-    seo,
-    nearbyBusinesses: results,
-    nearbyAvailable: available,
-  };
 }

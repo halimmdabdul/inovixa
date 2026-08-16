@@ -62,6 +62,12 @@ export interface FAQItem {
   answer: string;
 }
 
+export interface CaseStudyImprovement {
+  area: string;
+  before: string;
+  after: string;
+}
+
 export interface CaseStudy {
   slug: string;
   title: string;
@@ -77,6 +83,7 @@ export interface CaseStudy {
   performanceImprovements: string;
   seoSetup: string;
   leadStrategy: string;
+  improvements: CaseStudyImprovement[];
   metrics?: {
     label: string;
     value: string;

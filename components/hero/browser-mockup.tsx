@@ -11,10 +11,14 @@ import { cn } from "@/lib/utils";
 export function BrowserMockup({
   variant = "new",
   label,
+  oldBannerText = "★ Family Owned Since 1998 ★",
+  oldNavItems = ["Home", "About", "Services", "Photos", "Contact"],
   className,
 }: {
   variant?: "old" | "new";
   label?: string;
+  oldBannerText?: string;
+  oldNavItems?: string[];
   className?: string;
 }) {
   const isOld = variant === "old";
@@ -48,25 +52,29 @@ export function BrowserMockup({
         </div>
       </div>
 
-      {isOld ? <OldSiteContent /> : <NewSiteContent />}
+      {isOld ? (
+        <OldSiteContent bannerText={oldBannerText} navItems={oldNavItems} />
+      ) : (
+        <NewSiteContent />
+      )}
     </div>
   );
 }
 
-function OldSiteContent() {
+function OldSiteContent({ bannerText, navItems }: { bannerText: string; navItems: string[] }) {
   return (
     <div className="space-y-2.5 bg-[#ECE9E2] p-3.5 font-serif">
       {/* Marquee-style banner */}
       <div className="flex items-center justify-between bg-[#C0392B] px-2.5 py-1.5">
         <span className="text-[10px] font-bold uppercase tracking-wide text-yellow-300">
-          ★ Family Owned Since 1998 ★
+          {bannerText}
         </span>
         <span className="hidden text-[10px] font-bold text-white sm:inline">Call Now!</span>
       </div>
 
       {/* Cluttered nav row */}
       <div className="flex flex-wrap gap-1">
-        {["Home", "About", "Services", "Photos", "Contact"].map((item) => (
+        {navItems.map((item) => (
           <span
             key={item}
             className="border border-slate-400 bg-slate-200 px-2 py-0.5 text-[10px] font-bold text-blue-800 underline"

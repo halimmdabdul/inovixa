@@ -31,6 +31,38 @@ export const caseStudies: CaseStudy[] = [
       "Structured service pages, local business schema, and optimized titles and descriptions for local roofing searches.",
     leadStrategy:
       "A prominent estimate request form and click-to-call button placed above the fold on every page.",
+    improvements: [
+      {
+        area: "Homepage first impression",
+        before: "A wall of small text with no clear starting point for visitors.",
+        after: "One clear headline and a button to request an estimate, visible immediately.",
+      },
+      {
+        area: "Requesting an estimate",
+        before: "The contact form was buried at the very bottom of the page.",
+        after: "An estimate form and phone number are visible on every page.",
+      },
+      {
+        area: "Mobile experience",
+        before: "Text too small to read comfortably and buttons too small to tap.",
+        after: "Larger text and tap-friendly buttons designed for browsing on a phone.",
+      },
+      {
+        area: "Finding services",
+        before: "Roofing services were listed together in one long paragraph.",
+        after: "Repair, replacement, and storm damage each get their own clear page.",
+      },
+      {
+        area: "Page speed",
+        before: "Slow to load, especially over a mobile connection.",
+        after: "Optimized images and minimal code for fast loading on any connection.",
+      },
+      {
+        area: "Being found in search",
+        before: "No SEO structure, making it hard for Google to understand the site.",
+        after: "Structured pages and local business info to help nearby searches find it.",
+      },
+    ],
     coverImage: "/images/work/summit-ridge-roofing.svg",
   },
   {
@@ -58,6 +90,33 @@ export const caseStudies: CaseStudy[] = [
       "Local SEO foundations, service-specific pages, and structured data for a professional service.",
     leadStrategy:
       "Clear appointment request CTA repeated across every service page.",
+    improvements: [
+      {
+        area: "Online presence",
+        before: "No website — just a directory listing and word of mouth.",
+        after: "A dedicated site introducing the practice, team, and services.",
+      },
+      {
+        area: "Booking an appointment",
+        before: "No way to request an appointment online.",
+        after: "A simple appointment request form visible on every page.",
+      },
+      {
+        area: "Mobile experience",
+        before: "Nothing to browse on mobile — there was no site at all.",
+        after: "A mobile-first layout with a persistent call and booking button.",
+      },
+      {
+        area: "Search visibility",
+        before: "Invisible in local search results for nearby patients.",
+        after: "Local SEO foundations so the practice shows up in relevant searches.",
+      },
+      {
+        area: "Building trust",
+        before: "No photos, team information, or service details anywhere online.",
+        after: "Team bios, service pages, and a calm, professional design.",
+      },
+    ],
     coverImage: "/images/work/brightview-dental.svg",
   },
   {
@@ -85,6 +144,33 @@ export const caseStudies: CaseStudy[] = [
       "Structured data for real estate listings and location-based on-page SEO.",
     leadStrategy:
       "Inquiry forms on every listing and agent profile, with a clear path to schedule a viewing.",
+    improvements: [
+      {
+        area: "First impression",
+        before: "A dated design that looked years behind bigger real estate platforms.",
+        after: "A premium, modern layout that competes with national sites.",
+      },
+      {
+        area: "Finding an agent",
+        before: "No clear way to contact the specific agent behind a listing.",
+        after: "Every listing links to a dedicated agent profile with contact info.",
+      },
+      {
+        area: "Browsing listings",
+        before: "Slow-loading listing pages, especially with several photos.",
+        after: "Lazy-loaded images keep listing pages fast even with more photos.",
+      },
+      {
+        area: "Mobile experience",
+        before: "Listings were hard to browse and filter on a phone.",
+        after: "A fully responsive listing grid with simplified mobile filtering.",
+      },
+      {
+        area: "Requesting a viewing",
+        before: "No inquiry path on individual listing pages.",
+        after: "An inquiry form on every listing and agent profile.",
+      },
+    ],
     coverImage: "/images/work/harborline-realty.svg",
   },
 ];

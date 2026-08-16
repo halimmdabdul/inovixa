@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { AlertTriangle, Check, Search, Target } from "lucide-react";
+import { AlertTriangle, Search, Target } from "lucide-react";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { caseStudies, getCaseStudyBySlug } from "@/lib/data/case-studies";
 import { Section } from "@/components/ui/section";
@@ -10,6 +10,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { caseStudyScenes } from "@/components/illustrations/case-study-scenes";
 import { BrowserMockup } from "@/components/hero/browser-mockup";
+import { ImprovementsList } from "@/components/marketing/improvements-list";
 
 export function generateStaticParams() {
   return caseStudies.map((project) => ({ slug: project.slug }));
@@ -35,6 +36,26 @@ function projectDomain(title: string) {
   return `${title.toLowerCase().replace(/[^a-z0-9]+/g, "")}.com`;
 }
 
+/**
+ * Flavors the "old site" mockup per industry so the before/after comparison
+ * feels specific and relatable, without using any real business's actual
+ * website — these are original placeholder scenes, not screenshots.
+ */
+const oldSiteFlavor: Record<string, { bannerText: string; navItems: string[] }> = {
+  Roofing: {
+    bannerText: "☎ 24-HR Emergency Roof Repair ☎",
+    navItems: ["Home", "Roofing", "Repairs", "Storm Damage", "Contact"],
+  },
+  Dental: {
+    bannerText: "★ New Patients Welcome! ★",
+    navItems: ["Home", "About", "Services", "Insurance", "Contact"],
+  },
+  "Real Estate": {
+    bannerText: "★ Serving The Area Since 1998 ★",
+    navItems: ["Home", "Listings", "Agents", "Sell", "Contact"],
+  },
+};
+
 export default async function CaseStudyPage({
   params,
 }: {
@@ -47,14 +68,7 @@ export default async function CaseStudyPage({
 
   const Scene = caseStudyScenes[project.slug];
   const domain = projectDomain(project.title);
-
-  const buildSteps = [
-    { label: "Approach", value: project.solution },
-    { label: "Design", value: project.design },
-    { label: "Development", value: project.development },
-    { label: "Mobile Experience", value: project.mobileImprovements },
-    { label: "Performance", value: project.performanceImprovements },
-  ];
+  const flavor = oldSiteFlavor[project.industry];
 
   return (
     <>
@@ -88,11 +102,16 @@ export default async function CaseStudyPage({
         <SectionHeading
           eyebrow="The Transformation"
           title="From Struggling Site to a Working Website"
-          description={`A side-by-side look at ${project.title}'s website before and after the redesign.`}
+          description={`A side-by-side look at ${project.title}'s website before and after the redesign. This is an illustrated concept, not a screenshot of any real business's site.`}
         />
         <div className="mx-auto mt-12 grid max-w-5xl gap-8 lg:grid-cols-2">
           <div>
-            <BrowserMockup variant="old" label={domain} />
+            <BrowserMockup
+              variant="old"
+              label={domain}
+              oldBannerText={flavor?.bannerText}
+              oldNavItems={flavor?.navItems}
+            />
             <p className="mt-3 text-center text-sm text-slate-500">Before</p>
           </div>
           <div>
@@ -120,24 +139,15 @@ export default async function CaseStudyPage({
         </div>
       </Section>
 
-      {/* What we built */}
+      {/* What we improved */}
       <Section tone="surface">
-        <SectionHeading eyebrow="What We Built" title="Our Approach on This Project" />
-        <div className="mx-auto mt-12 max-w-3xl space-y-4">
-          {buildSteps.map((step) => (
-            <div
-              key={step.label}
-              className="flex gap-4 rounded-xl border border-slate-200 bg-white p-5"
-            >
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-50">
-                <Check className="h-4 w-4 text-brand-blue" aria-hidden="true" />
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold text-navy">{step.label}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-slate-600">{step.value}</p>
-              </div>
-            </div>
-          ))}
+        <SectionHeading
+          eyebrow="What We Improved"
+          title="Exactly What Changed, and Why It Matters"
+          description="A plain-language look at each area we worked on, before and after."
+        />
+        <div className="mx-auto mt-12 max-w-3xl">
+          <ImprovementsList improvements={project.improvements} />
         </div>
       </Section>
 

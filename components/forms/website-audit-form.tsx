@@ -20,6 +20,7 @@ type FormFields = Omit<AuditFormValues, "formRenderedAt">;
 export function WebsiteAuditForm() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [statusMessage, setStatusMessage] = useState("");
+  const [step, setStep] = useState<1 | 2>(1);
 
   // Captured once on first render for the submission-timing spam check — see
   // lib/validation/spam-check.ts. A lazy initializer runs exactly once, so
@@ -29,6 +30,7 @@ export function WebsiteAuditForm() {
   const {
     register,
     handleSubmit,
+    trigger,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<FormFields>({
@@ -37,6 +39,11 @@ export function WebsiteAuditForm() {
       companyWebsite: "",
     },
   });
+
+  async function goToStep2() {
+    const valid = await trigger(["websiteUrl", "businessEmail"]);
+    if (valid) setStep(2);
+  }
 
   async function onSubmit(values: FormFields) {
     setStatus("idle");
@@ -49,6 +56,7 @@ export function WebsiteAuditForm() {
     if (result.success) {
       reset({ companyWebsite: "" });
       setRenderedAt(currentTimestamp());
+      setStep(1);
     }
   }
 
@@ -79,108 +87,135 @@ export function WebsiteAuditForm() {
         />
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <InputField
-          label="Website URL"
-          id="websiteUrl"
-          placeholder="yourbusiness.com or 'none'"
-          error={errors.websiteUrl?.message}
-          {...register("websiteUrl")}
-        />
-        <InputField
-          label="Full name"
-          id="name"
-          error={errors.name?.message}
-          {...register("name")}
-        />
-        <InputField
-          label="Business name"
-          id="businessName"
-          error={errors.businessName?.message}
-          {...register("businessName")}
-        />
-        <InputField
-          label="Business email"
-          id="businessEmail"
-          type="email"
-          error={errors.businessEmail?.message}
-          {...register("businessEmail")}
-        />
-        <InputField
-          label="Phone number"
-          id="phone"
-          type="tel"
-          optional
-          error={errors.phone?.message}
-          {...register("phone")}
-        />
-        <SelectField
-          label="Business industry"
-          id="industry"
-          options={industryOptions}
-          error={errors.industry?.message}
-          {...register("industry")}
-        />
-      </div>
+      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+        Step {step} of 2
+      </p>
 
-      <SelectField
-        label="Main website goal"
-        id="websiteGoal"
-        options={websiteGoalOptions}
-        error={errors.websiteGoal?.message}
-        {...register("websiteGoal")}
-      />
+      {step === 1 ? (
+        <div key="step-1" className="space-y-5">
+          <div className="grid gap-5 sm:grid-cols-2">
+            <InputField
+              label="Website URL"
+              id="websiteUrl"
+              placeholder="yourbusiness.com or 'none'"
+              error={errors.websiteUrl?.message}
+              {...register("websiteUrl")}
+            />
+            <InputField
+              label="Business email"
+              id="businessEmail"
+              type="email"
+              error={errors.businessEmail?.message}
+              {...register("businessEmail")}
+            />
+          </div>
 
-      <TextareaField
-        label="Biggest website challenge"
-        id="websiteProblem"
-        placeholder="What's the main problem with your website today?"
-        error={errors.websiteProblem?.message}
-        {...register("websiteProblem")}
-      />
+          <Button type="button" onClick={goToStep2} className="w-full">
+            Analyze My Website
+          </Button>
+        </div>
+      ) : (
+        <div key="step-2" className="space-y-5">
+          <div className="grid gap-5 sm:grid-cols-2">
+            <InputField
+              label="Full name"
+              id="name"
+              error={errors.name?.message}
+              {...register("name")}
+            />
+            <InputField
+              label="Business name"
+              id="businessName"
+              error={errors.businessName?.message}
+              {...register("businessName")}
+            />
+            <SelectField
+              label="Business industry"
+              id="industry"
+              options={industryOptions}
+              error={errors.industry?.message}
+              {...register("industry")}
+            />
+            <InputField
+              label="Phone number"
+              id="phone"
+              type="tel"
+              optional
+              error={errors.phone?.message}
+              {...register("phone")}
+            />
+          </div>
 
-      <TextareaField
-        label="Message"
-        id="message"
-        optional
-        placeholder="Anything else we should know?"
-        error={errors.message?.message}
-        {...register("message")}
-      />
+          <SelectField
+            label="Main website goal"
+            id="websiteGoal"
+            options={websiteGoalOptions}
+            error={errors.websiteGoal?.message}
+            {...register("websiteGoal")}
+          />
 
-      <div className="flex items-start gap-3">
-        <input
-          id="consent"
-          type="checkbox"
-          className="mt-1 h-4 w-4 rounded border-slate-300 text-brand-blue focus:ring-brand-blue"
-          {...register("consent")}
-        />
-        <label htmlFor="consent" className="text-sm text-slate-600">
-          I agree to be contacted by Inovixa Digital about my website audit.
-        </label>
-      </div>
-      {errors.consent?.message ? (
-        <p role="alert" className="-mt-3 text-sm text-red-600">
-          {errors.consent.message}
-        </p>
-      ) : null}
+          <TextareaField
+            label="Biggest website challenge"
+            id="websiteProblem"
+            placeholder="What's the main problem with your website today?"
+            error={errors.websiteProblem?.message}
+            {...register("websiteProblem")}
+          />
 
-      {status === "error" ? (
-        <p role="alert" className="text-sm text-red-600">
-          {statusMessage}
-        </p>
-      ) : null}
+          <TextareaField
+            label="Message"
+            id="message"
+            optional
+            placeholder="Anything else we should know?"
+            error={errors.message?.message}
+            {...register("message")}
+          />
 
-      <Button type="submit" disabled={isSubmitting} className="w-full">
-        {isSubmitting ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-            Sending...
-          </>
-        ) : (
-          "Get Your Free Website Audit"
-        )}
-      </Button>
+          <div className="flex items-start gap-3">
+            <input
+              id="consent"
+              type="checkbox"
+              className="mt-1 h-4 w-4 rounded border-slate-300 text-brand-blue focus:ring-brand-blue"
+              {...register("consent")}
+            />
+            <label htmlFor="consent" className="text-sm text-slate-600">
+              I agree to be contacted by Inovixa Digital about my website audit.
+            </label>
+          </div>
+          {errors.consent?.message ? (
+            <p role="alert" className="-mt-3 text-sm text-red-600">
+              {errors.consent.message}
+            </p>
+          ) : null}
+
+          {status === "error" ? (
+            <p role="alert" className="text-sm text-red-600">
+              {statusMessage}
+            </p>
+          ) : null}
+
+          <div className="flex gap-3">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setStep(1)}
+              className="shrink-0"
+            >
+              Back
+            </Button>
+            <Button type="submit" disabled={isSubmitting} className="w-full">
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                  Sending...
+                </>
+              ) : (
+                "Get Your Free Website Audit"
+              )}
+            </Button>
+          </div>
+        </div>
+      )}
     </form>
   );
 }

@@ -13,11 +13,13 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
  */
 export function createAdminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  // Newer Supabase projects call this the "Secret key" (SUPABASE_SECRET_KEY);
+  // older projects still label it "service_role". Either works here.
+  const secretKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!url || !serviceRoleKey) return null;
+  if (!url || !secretKey) return null;
 
-  return createSupabaseClient(url, serviceRoleKey, {
+  return createSupabaseClient(url, secretKey, {
     auth: { persistSession: false },
   });
 }

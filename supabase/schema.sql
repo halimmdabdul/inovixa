@@ -7,8 +7,8 @@
 -- Row-level security is enabled with a SELECT-only policy for signed-in
 -- admins. There is deliberately no INSERT policy for the anon/authenticated
 -- roles — new leads are written exclusively by the server using the
--- service-role key (see lib/supabase/admin.ts), which bypasses RLS. This
--- means a lead can never be inserted directly by a browser, only read by an
+-- secret key (see lib/supabase/admin.ts), which bypasses RLS. This means a
+-- lead can never be inserted directly by a browser, only read by an
 -- authenticated admin.
 
 create table if not exists public.leads (
@@ -38,7 +38,7 @@ create policy "Authenticated users can view leads"
   to authenticated
   using (true);
 
--- No insert/update/delete policies are defined, so only the service-role
--- key (used server-side in lib/supabase/admin.ts) can write to this table.
+-- No insert/update/delete policies are defined, so only the secret key
+-- (used server-side in lib/supabase/admin.ts) can write to this table.
 
 create index if not exists leads_created_at_idx on public.leads (created_at desc);

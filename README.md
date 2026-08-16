@@ -51,7 +51,7 @@ cp .env.example .env.local
 | `AUDIT_NOTIFICATION_EMAIL` | Optional | Recipient for website audit request notifications |
 | `CONTACT_NOTIFICATION_EMAIL` | Optional | Recipient for contact form notifications |
 | `NEXT_PUBLIC_GA_ID` | Optional | Enables Google Analytics |
-| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY` | Optional | Enables Supabase lead storage (see `lib/leads.ts`) |
+| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` / `SUPABASE_SECRET_KEY` | Optional | Enables Supabase lead storage and the `/admin` dashboard (see "Admin Dashboard" below) |
 
 The site runs and forms still work with none of these set — submissions are
 simply logged instead of emailed or stored.
@@ -159,23 +159,26 @@ just redirects to a login page that says so.
    `/admin/login`). Email confirmation can be skipped for an internal admin
    account.
 4. **Set environment variables** (locally in `.env.local`, and in Vercel
-   under Project Settings -> Environment Variables):
-   - `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` — from
-     Project Settings -> API in the Supabase dashboard. Safe to expose to
-     the browser; RLS controls what they can actually access.
-   - `SUPABASE_SERVICE_ROLE_KEY` — also from Project Settings -> API. This
-     one bypasses RLS entirely and must **never** be exposed to the
-     browser or committed — it's what lets the audit/contact server
-     actions insert leads despite the table having no public insert
-     policy.
+   under Project Settings -> Environment Variables). Both come from Project
+   Settings -> API Keys in the Supabase dashboard — newer projects label
+   them "Publishable key" and "Secret key"; older projects may still show
+   "anon" / "service_role" instead, which work identically here:
+   - `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` —
+     safe to expose to the browser; RLS controls what they can actually
+     access.
+   - `SUPABASE_SECRET_KEY` (or `SUPABASE_SERVICE_ROLE_KEY` on older
+     projects — both are read) — this one bypasses RLS entirely and must
+     **never** be exposed to the browser or committed. It's what lets the
+     audit/contact server actions insert leads despite the table having no
+     public insert policy.
 5. Visit `/admin/login` and sign in with the user you created in step 3.
 
 ### How it fits together
 
-- `lib/supabase/client.ts` / `lib/supabase/server.ts` — anon-key clients for
-  the browser (login form) and for Server Components/Actions running with
-  the signed-in admin's session, subject to RLS.
-- `lib/supabase/admin.ts` — the service-role client, used only by
+- `lib/supabase/client.ts` / `lib/supabase/server.ts` — publishable-key
+  clients for the browser (login form) and for Server Components/Actions
+  running with the signed-in admin's session, subject to RLS.
+- `lib/supabase/admin.ts` — the secret-key client, used only by
   `lib/leads.ts` to insert new leads from public form submissions. Never
   used to read data back out for a request.
 - `proxy.ts` (Next.js 16 renamed `middleware.ts` to `proxy.ts`) — refreshes

@@ -35,7 +35,7 @@ export interface Lead {
 
 /**
  * Persists a lead to Supabase once it's configured. Until
- * NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set, this only
+ * NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SECRET_KEY are set, this only
  * logs the attempt — forms still work end to end without Supabase, since
  * the audit/contact server actions also send an email notification
  * independently of this call. See supabase/schema.sql for the table

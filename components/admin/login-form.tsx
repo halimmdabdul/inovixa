@@ -8,7 +8,7 @@ import { InputField } from "@/components/ui/form-field";
 import { Button } from "@/components/ui/button";
 
 const isConfigured = Boolean(
-  process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
 );
 
 export function AdminLoginForm() {
@@ -23,7 +23,7 @@ export function AdminLoginForm() {
       <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-800">
         Supabase isn&rsquo;t configured yet. Set{" "}
         <code className="rounded bg-amber-100 px-1 py-0.5">NEXT_PUBLIC_SUPABASE_URL</code> and{" "}
-        <code className="rounded bg-amber-100 px-1 py-0.5">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> to
+        <code className="rounded bg-amber-100 px-1 py-0.5">NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code> to
         enable admin login.
       </div>
     );

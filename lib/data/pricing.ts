@@ -5,7 +5,8 @@ export const pricingPlans: PricingPlan[] = [
     id: "start",
     name: "START",
     price: "$999",
-    description: "For businesses that need a professional online presence.",
+    description:
+      "Get your business online with a professional website that makes it easy for customers to find and contact you.",
     features: [
       "Up to 5 pages",
       "Responsive design",
@@ -25,7 +26,7 @@ export const pricingPlans: PricingPlan[] = [
     id: "grow",
     name: "GROW",
     price: "$1,799",
-    description: "Our most popular package for businesses ready to grow.",
+    description: "Built for businesses that want their website to actively generate leads.",
     features: [
       "Everything in START",
       "Up to 8-10 pages",
@@ -45,7 +46,7 @@ export const pricingPlans: PricingPlan[] = [
     id: "scale",
     name: "SCALE",
     price: "From $2,999",
-    description: "For businesses requiring advanced functionality.",
+    description: "For businesses that need their website to become part of their operations.",
     features: [
       "Custom website",
       "Web applications",

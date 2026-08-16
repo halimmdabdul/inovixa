@@ -4,6 +4,7 @@ import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { PricingCard } from "@/components/cards/pricing-card";
 import { CTASection } from "@/components/marketing/cta-section";
+import { RiskReductionSection } from "@/components/sections/risk-reduction-section";
 
 export const metadata = buildMetadata({
   title: "Pricing",
@@ -34,7 +35,9 @@ export default function PricingPage() {
         </p>
       </Section>
 
-      <Section tone="surface">
+      <RiskReductionSection />
+
+      <Section>
         <SectionHeading
           eyebrow="Website Care"
           title="Monthly Website Care Plans"

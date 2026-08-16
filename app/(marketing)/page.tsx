@@ -13,6 +13,7 @@ import { ExpectationsSection } from "@/components/sections/expectations-section"
 import { FAQSection } from "@/components/sections/faq-section";
 import { CTASection } from "@/components/marketing/cta-section";
 import { SiteCheckerSection } from "@/components/sections/site-checker-section";
+import { FounderSection } from "@/components/sections/founder-section";
 
 export const metadata = buildMetadata({
   title: "Websites Built to Grow Your Business",
@@ -42,6 +43,7 @@ export default function HomePage() {
         secondaryLabel="Discuss Your Project"
       />
       <WhyInovixa />
+      <FounderSection />
       <HowItWorks />
       <IndustriesSection />
       <PricingPreview />

@@ -3,6 +3,7 @@ import { buildMetadata } from "@/lib/seo/metadata";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CTASection } from "@/components/marketing/cta-section";
+import { FounderSection } from "@/components/sections/founder-section";
 
 export const metadata = buildMetadata({
   title: "About",
@@ -80,7 +81,9 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <Section tone="surface">
+      <FounderSection tone="surface" />
+
+      <Section>
         <SectionHeading eyebrow="Our Principles" title="What We Value" />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {values.map((value) => (

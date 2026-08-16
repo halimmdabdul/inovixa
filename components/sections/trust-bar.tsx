@@ -2,24 +2,39 @@ import { Gauge, MessageSquareText, Smartphone, Target, TrendingUp } from "lucide
 import { Section } from "@/components/ui/section";
 
 const indicators = [
-  { label: "Mobile-First Design", icon: Smartphone },
-  { label: "SEO-Ready", icon: TrendingUp },
-  { label: "Fast Performance", icon: Gauge },
-  { label: "Conversion-Focused", icon: Target },
-  { label: "Clear Communication", icon: MessageSquareText },
-];
+  { label: "Mobile-First Design", icon: Smartphone, tone: "blue" },
+  { label: "SEO-Ready", icon: TrendingUp, tone: "teal" },
+  { label: "Fast Performance", icon: Gauge, tone: "blue" },
+  { label: "Conversion-Focused", icon: Target, tone: "teal" },
+  { label: "Clear Communication", icon: MessageSquareText, tone: "blue" },
+] as const;
 
 export function TrustBar() {
   return (
-    <Section tone="surface" className="border-y border-slate-200 py-10 sm:py-12">
-      <p className="text-center text-sm font-semibold uppercase tracking-wide text-slate-500">
+    <Section tone="surface" className="border-y border-slate-200 py-12 sm:py-14">
+      <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-brand-blue">
         Built for Growing Local Businesses
       </p>
-      <div className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+      <div className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
         {indicators.map((indicator) => (
-          <div key={indicator.label} className="flex items-center gap-2 text-slate-600">
-            <indicator.icon className="h-4 w-4 text-brand-blue" aria-hidden="true" />
-            <span className="text-sm font-medium">{indicator.label}</span>
+          <div
+            key={indicator.label}
+            className="flex items-center gap-2.5 rounded-full border border-slate-200 bg-white py-2 pl-2.5 pr-4 shadow-sm transition-shadow hover:shadow-md"
+          >
+            <span
+              className={
+                "flex h-7 w-7 items-center justify-center rounded-full " +
+                (indicator.tone === "teal" ? "bg-teal-50" : "bg-blue-50")
+              }
+            >
+              <indicator.icon
+                className={
+                  "h-3.5 w-3.5 " + (indicator.tone === "teal" ? "text-brand-teal" : "text-brand-blue")
+                }
+                aria-hidden="true"
+              />
+            </span>
+            <span className="text-sm font-medium text-slate-700">{indicator.label}</span>
           </div>
         ))}
       </div>

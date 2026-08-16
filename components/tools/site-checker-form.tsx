@@ -10,11 +10,13 @@ import { currentTimestamp } from "@/lib/form-timestamp";
 import { InputField } from "@/components/ui/form-field";
 import { Button } from "@/components/ui/button";
 import { SiteCheckerResults } from "@/components/tools/site-checker-results";
+import { SiteCheckerTeaser } from "@/components/tools/site-checker-teaser";
 
 type FormFields = Omit<SiteCheckerValues, "formRenderedAt">;
 
 export function SiteCheckerForm() {
   const [result, setResult] = useState<SiteCheckupResult | null>(null);
+  const [unlocked, setUnlocked] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   // Captured once on first render for the submission-timing spam check — see
@@ -43,11 +45,16 @@ export function SiteCheckerForm() {
   }
 
   if (result?.success && result.seo) {
+    if (!unlocked) {
+      return <SiteCheckerTeaser seo={result.seo} onUnlocked={() => setUnlocked(true)} />;
+    }
+
     return (
       <SiteCheckerResults
         seo={result.seo}
         onReset={() => {
           setResult(null);
+          setUnlocked(false);
           reset({ companyWebsite: "" });
         }}
       />

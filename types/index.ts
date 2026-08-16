@@ -121,9 +121,14 @@ export interface SeoCheckResult {
   score: number;
   finalUrl: string;
   checks: SeoCheckItem[];
+  categories: {
+    seo: number;
+    speed: number;
+    mobile: number;
+  };
 }
 
-export type LeadSource = "website_audit" | "contact_form";
+export type LeadSource = "website_audit" | "contact_form" | "seo_checker";
 
 export type LeadStatus =
   | "new"

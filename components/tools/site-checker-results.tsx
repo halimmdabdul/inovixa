@@ -1,7 +1,8 @@
-import { AlertTriangle, ArrowRight, CheckCircle2, RotateCcw, XCircle } from "lucide-react";
+import { AlertTriangle, CalendarCheck, CheckCircle2, RotateCcw, XCircle } from "lucide-react";
 import type { SeoCheckResult } from "@/types";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { scoreTone } from "@/lib/seo/score-tone";
 
 const statusIcon = {
   pass: CheckCircle2,
@@ -14,12 +15,6 @@ const statusColor = {
   warn: "text-amber-500",
   fail: "text-red-500",
 } as const;
-
-function scoreTone(score: number) {
-  if (score >= 80) return { label: "Good", color: "text-brand-teal" };
-  if (score >= 50) return { label: "Needs Work", color: "text-amber-500" };
-  return { label: "Poor", color: "text-red-500" };
-}
 
 export function SiteCheckerResults({
   seo,
@@ -73,13 +68,13 @@ export function SiteCheckerResults({
       </div>
 
       <div className="flex flex-col items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center sm:p-8">
-        <p className="text-sm text-slate-600">
-          Want a full professional review, not just an automated scan?
+        <p className="text-base font-semibold text-navy">
+          Want us to explain how to fix these issues?
         </p>
         <div className="flex flex-col gap-3 sm:flex-row">
-          <Button href="/audit">
-            Get Your Free Website Audit
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          <Button href="/contact">
+            <CalendarCheck className="h-4 w-4" aria-hidden="true" />
+            Book a Free 15-Minute Website Review
           </Button>
           <Button variant="secondary" onClick={onReset} type="button">
             <RotateCcw className="h-4 w-4" aria-hidden="true" />

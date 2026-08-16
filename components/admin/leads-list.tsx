@@ -9,12 +9,14 @@ import { cn } from "@/lib/utils";
 const sourceLabel: Record<LeadSource, string> = {
   website_audit: "Website Audit",
   contact_form: "Contact Form",
+  seo_checker: "SEO Checker",
 };
 
 const sourceFilters: { value: LeadSource | "all"; label: string }[] = [
   { value: "all", label: "All Sources" },
   { value: "website_audit", label: "Website Audit" },
   { value: "contact_form", label: "Contact Form" },
+  { value: "seo_checker", label: "SEO Checker" },
 ];
 
 const statusFilters: { value: LeadStatus | "all"; label: string }[] = [

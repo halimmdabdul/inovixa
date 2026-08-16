@@ -169,5 +169,32 @@ export function scoreSeo(html: string, finalUrl: string, elapsedMs: number): Seo
     checks.reduce((total, check) => total + statusPoints[check.status], 0),
   );
 
-  return { score, finalUrl, checks };
+  const categories = {
+    seo: categoryScore(checks, [
+      "https",
+      "title",
+      "description",
+      "headings",
+      "alt-text",
+      "open-graph",
+      "canonical",
+      "indexing",
+    ]),
+    speed: categoryScore(checks, ["speed"]),
+    mobile: categoryScore(checks, ["viewport"]),
+  };
+
+  return { score, finalUrl, checks, categories };
+}
+
+/**
+ * Averages the same real per-check points used for the overall score, scaled
+ * to 0-100, across just the checks in one category. Every category score is
+ * still derived from the actual scan — nothing here is a separate estimate.
+ */
+function categoryScore(checks: SeoCheckItem[], ids: string[]) {
+  const relevant = checks.filter((check) => ids.includes(check.id));
+  if (relevant.length === 0) return 0;
+  const total = relevant.reduce((sum, check) => sum + statusPoints[check.status], 0);
+  return Math.round((total / (relevant.length * POINTS_PER_CHECK)) * 100);
 }

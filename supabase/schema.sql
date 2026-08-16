@@ -14,7 +14,7 @@
 create table if not exists public.leads (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
-  source text not null check (source in ('website_audit', 'contact_form')),
+  source text not null check (source in ('website_audit', 'contact_form', 'seo_checker')),
   status text not null default 'new'
     check (status in ('new', 'contacted', 'qualified', 'proposal_sent', 'won', 'lost')),
   name text not null,
@@ -42,3 +42,10 @@ create policy "Authenticated users can view leads"
 -- (used server-side in lib/supabase/admin.ts) can write to this table.
 
 create index if not exists leads_created_at_idx on public.leads (created_at desc);
+
+-- Migration: run this if your leads table already exists from before the
+-- "seo_checker" source was added (the free SEO checker's email-gated full
+-- report). Safe to run even if already applied.
+alter table public.leads drop constraint if exists leads_source_check;
+alter table public.leads add constraint leads_source_check
+  check (source in ('website_audit', 'contact_form', 'seo_checker'));

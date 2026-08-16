@@ -1,5 +1,5 @@
 export const founder = {
-  name: "Harim Muhammad Abdullah",
+  name: "Halim Muhammad Abdullah",
   title: "Founder & Software Engineer",
   location: "Based in Japan. Working with businesses worldwide.",
   bio: "Software engineer with 7+ years of experience building software and digital solutions. Inovixa Digital was created to help small businesses get modern websites without the complexity and inflated agency process.",

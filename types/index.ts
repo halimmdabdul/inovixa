@@ -92,6 +92,16 @@ export interface CaseStudy {
   coverImage: string;
 }
 
+export interface ClientResult {
+  clientName: string;
+  business: string;
+  industry: string;
+  before: string;
+  whatWeChanged: string;
+  result: string;
+  quote: string;
+}
+
 export interface Testimonial {
   name: string;
   company: string;

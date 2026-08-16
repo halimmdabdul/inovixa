@@ -14,6 +14,7 @@ import { FAQSection } from "@/components/sections/faq-section";
 import { CTASection } from "@/components/marketing/cta-section";
 import { SiteCheckerSection } from "@/components/sections/site-checker-section";
 import { FounderSection } from "@/components/sections/founder-section";
+import { ClientResultsSection } from "@/components/sections/client-results-section";
 
 export const metadata = buildMetadata({
   title: "Websites Built to Grow Your Business",
@@ -37,6 +38,7 @@ export default function HomePage() {
         secondaryLabel="Explore All Services"
       />
       <FeaturedWork />
+      <ClientResultsSection />
       <CTASection
         title="Ready for a website like this?"
         secondaryHref="/contact"

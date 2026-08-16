@@ -4,8 +4,6 @@ import "./globals.css";
 import { siteConfig } from "@/lib/constants/site";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
 import { JsonLd } from "@/components/seo/json-ld";
-import { Navbar } from "@/components/navigation/navbar";
-import { Footer } from "@/components/navigation/footer";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 
 const manrope = Manrope({
@@ -54,11 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={websiteJsonLd()} />
-        <Navbar />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        {children}
         <GoogleAnalytics />
       </body>
     </html>

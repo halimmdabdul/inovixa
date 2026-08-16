@@ -10,7 +10,7 @@ import {
   serviceInterestOptions,
   type ContactFormValues,
 } from "@/lib/validation/contact";
-import { submitContactRequest } from "@/app/contact/actions";
+import { submitContactRequest } from "@/app/actions/contact";
 import { currentTimestamp } from "@/lib/form-timestamp";
 import { InputField, SelectField, TextareaField } from "@/components/ui/form-field";
 import { Button } from "@/components/ui/button";

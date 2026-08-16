@@ -10,7 +10,7 @@ import {
   websiteGoalOptions,
   type AuditFormValues,
 } from "@/lib/validation/audit";
-import { submitAuditRequest } from "@/app/audit/actions";
+import { submitAuditRequest } from "@/app/actions/audit";
 import { currentTimestamp } from "@/lib/form-timestamp";
 import { InputField, SelectField, TextareaField } from "@/components/ui/form-field";
 import { Button } from "@/components/ui/button";

@@ -83,8 +83,8 @@ set the environment variables above in the project settings, and deploy.
 ## Forms
 
 - `/audit` and `/contact` use React Hook Form + Zod for client-side
-  validation and Next.js Server Actions (`app/audit/actions.ts`,
-  `app/contact/actions.ts`) for server-side validation, spam checks, and
+  validation and Next.js Server Actions (`app/actions/audit.ts`,
+  `app/actions/contact.ts`) for server-side validation, spam checks, and
   email delivery.
 - Spam protection: a hidden honeypot field plus a submission-timing check
   (see `lib/validation/spam-check.ts`). No CAPTCHA is required.

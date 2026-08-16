@@ -8,7 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { CTASection } from "@/components/marketing/cta-section";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
-import { caseStudyScenes } from "@/components/illustrations/case-study-scenes";
 import { BrowserMockup, type NewSiteCopy, type OldSiteCopy } from "@/components/hero/browser-mockup";
 import { ImprovementsList } from "@/components/marketing/improvements-list";
 
@@ -121,7 +120,6 @@ export default async function CaseStudyPage({
 
   if (!project) notFound();
 
-  const Scene = caseStudyScenes[project.slug];
   const domain = projectDomain(project.title);
   const copy = mockupCopy[project.industry];
 
@@ -145,10 +143,6 @@ export default async function CaseStudyPage({
             {project.title}
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-slate-600">{project.summary}</p>
-        </div>
-
-        <div className="mx-auto mt-12 aspect-[16/7] max-w-4xl overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
-          {Scene ? <Scene /> : null}
         </div>
       </Section>
 

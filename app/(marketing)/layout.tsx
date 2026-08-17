@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
+import { StickyMobileCta } from "@/components/marketing/sticky-mobile-cta";
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -9,6 +10,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
         {children}
       </main>
       <Footer />
+      <StickyMobileCta />
     </>
   );
 }

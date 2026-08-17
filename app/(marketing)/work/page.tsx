@@ -22,6 +22,10 @@ export default function WorkPage() {
             demonstrate our design and development approach. As we complete
             real client projects, they&rsquo;ll be added here.
           </p>
+          <p className="mt-3 text-sm text-slate-500">
+            Built the same way we&rsquo;d build for a paying client — by the
+            same engineer with 7+ years of experience building software.
+          </p>
         </div>
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {caseStudies.map((project) => (

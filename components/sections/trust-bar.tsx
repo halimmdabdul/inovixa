@@ -1,4 +1,4 @@
-import { Gauge, MessageSquareText, Smartphone, Target, TrendingUp } from "lucide-react";
+import { Code2, Gauge, Smartphone, Target, TrendingUp } from "lucide-react";
 import { Section } from "@/components/ui/section";
 
 const indicators = [
@@ -6,7 +6,7 @@ const indicators = [
   { label: "SEO-Ready", icon: TrendingUp, tone: "teal" },
   { label: "Fast Performance", icon: Gauge, tone: "blue" },
   { label: "Conversion-Focused", icon: Target, tone: "teal" },
-  { label: "Clear Communication", icon: MessageSquareText, tone: "blue" },
+  { label: "7+ Years Building Software", icon: Code2, tone: "blue" },
 ] as const;
 
 export function TrustBar() {

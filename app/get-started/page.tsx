@@ -41,7 +41,7 @@ export default function GetStartedPage() {
         />
       </main>
       <LandingFooter />
-      <StickyMobileCta />
+      <StickyMobileCta href="#audit-form" />
     </>
   );
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Check, ChevronRight } from "lucide-react";
+import { ArrowRight, Check, ChevronRight, ShieldCheck } from "lucide-react";
 import type { Service } from "@/types";
 import { services } from "@/lib/data/services";
 import { Section } from "@/components/ui/section";
@@ -73,6 +73,13 @@ export function ServiceDetail({ service }: { service: Service }) {
                 View Pricing
               </Button>
             </div>
+            <Link
+              href="/pricing#risk"
+              className="mt-4 flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-blue"
+            >
+              <ShieldCheck className="h-4 w-4 text-brand-teal" aria-hidden="true" />
+              50% to start, 50% at launch — no surprise invoices
+            </Link>
           </div>
 
           <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200 shadow-sm">

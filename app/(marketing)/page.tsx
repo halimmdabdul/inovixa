@@ -32,17 +32,12 @@ export default function HomePage() {
       <SiteCheckerSection />
       <BeforeAfterSection />
       <ServicesSection />
-      <CTASection
-        title="Tell us what your business needs."
-        secondaryHref="/services"
-        secondaryLabel="Explore All Services"
-      />
       <FeaturedWork />
       <ClientResultsSection />
       <CTASection
         title="Ready for a website like this?"
-        secondaryHref="/contact"
-        secondaryLabel="Discuss Your Project"
+        secondaryHref="/pricing"
+        secondaryLabel="See Pricing"
       />
       <WhyInovixa />
       <FounderSection />
@@ -50,10 +45,6 @@ export default function HomePage() {
       <IndustriesSection />
       <PricingPreview />
       <ExpectationsSection />
-      <CTASection
-        title="Find Out What's Holding Your Website Back"
-        description="Get a practical review of your website's design, mobile experience, performance, SEO foundations, and conversion opportunities. No obligation."
-      />
       <FAQSection />
       <CTASection
         title="Ready for a website that works as hard as you do?"

@@ -5,7 +5,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 
 export function RiskReductionSection() {
   return (
-    <Section tone="surface">
+    <Section tone="surface" id="risk">
       <SectionHeading
         eyebrow="How Payment Works"
         title="A Simple, Low-Risk Process"

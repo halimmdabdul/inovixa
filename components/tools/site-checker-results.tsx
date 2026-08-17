@@ -74,7 +74,7 @@ export function SiteCheckerResults({
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button href="/contact">
             <CalendarCheck className="h-4 w-4" aria-hidden="true" />
-            Book a Free 15-Minute Website Review
+            Book a Free 15-Minute Website Strategy Call
           </Button>
           <Button variant="secondary" onClick={onReset} type="button">
             <RotateCcw className="h-4 w-4" aria-hidden="true" />

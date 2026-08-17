@@ -16,11 +16,11 @@ export function Hero() {
             businesses that want more calls, bookings, leads, and customers.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Button href="/audit" size="md">
+            <Button href="/audit" size="md" trackLabel="Hero: Get Your Free Website Audit">
               Get Your Free Website Audit
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Button>
-            <Button href="/work" variant="secondary" size="md">
+            <Button href="/work" variant="secondary" size="md" trackLabel="Hero: View Our Work">
               View Our Work
             </Button>
           </div>

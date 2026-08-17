@@ -52,6 +52,7 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
         href="/contact"
         variant={plan.highlighted ? "teal" : "secondary"}
         className="mt-8 w-full"
+        trackLabel={`Pricing: ${plan.name} — ${plan.cta}`}
       >
         {plan.cta}
       </Button>

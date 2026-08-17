@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
 import { primaryNav, siteConfig } from "@/lib/constants/site";
 import { Button } from "@/components/ui/button";
+import { trackEvent } from "@/app/actions/track-event";
 
 export function MobileNav({
   open,
@@ -12,6 +14,8 @@ export function MobileNav({
   open: boolean;
   onClose: () => void;
 }) {
+  const pathname = usePathname();
+
   if (!open) return null;
 
   return (
@@ -46,14 +50,22 @@ export function MobileNav({
           ))}
         </nav>
         <div className="mt-8 space-y-3">
-          <Button href="/audit" className="w-full" onClick={onClose}>
+          <Button
+            href="/audit"
+            className="w-full"
+            onClick={onClose}
+            trackLabel="Mobile Nav: Free Website Audit"
+          >
             Free Website Audit
           </Button>
           <a
             href={siteConfig.bookingCallUrl}
             target={siteConfig.isBookingCallExternal ? "_blank" : undefined}
             rel={siteConfig.isBookingCallExternal ? "noopener noreferrer" : undefined}
-            onClick={onClose}
+            onClick={() => {
+              trackEvent({ eventType: "click", path: pathname, label: "Mobile Nav: Book a 15-Min Call" });
+              onClose();
+            }}
             className="block text-center text-sm font-medium text-slate-600 hover:text-navy"
           >
             Book a 15-Min Call

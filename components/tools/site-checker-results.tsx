@@ -72,7 +72,7 @@ export function SiteCheckerResults({
           Want us to explain how to fix these issues?
         </p>
         <div className="flex flex-col gap-3 sm:flex-row">
-          <Button href="/contact">
+          <Button href="/contact" trackLabel="SEO Checker: Book a Free 15-Minute Website Strategy Call">
             <CalendarCheck className="h-4 w-4" aria-hidden="true" />
             Book a Free 15-Minute Website Strategy Call
           </Button>

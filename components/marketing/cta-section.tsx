@@ -29,12 +29,12 @@ export function CTASection({
           <p className="mt-4 text-lg leading-relaxed text-slate-300">{description}</p>
         ) : null}
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <Button href={primaryHref} variant="teal">
+          <Button href={primaryHref} variant="teal" trackLabel={primaryLabel}>
             {primaryLabel}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Button>
           {secondaryHref && secondaryLabel ? (
-            <Button href={secondaryHref} variant="outlineLight">
+            <Button href={secondaryHref} variant="outlineLight" trackLabel={secondaryLabel}>
               {secondaryLabel}
             </Button>
           ) : null}

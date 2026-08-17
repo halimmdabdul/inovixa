@@ -12,6 +12,7 @@ import { PricingPreview } from "@/components/sections/pricing-preview";
 import { FAQSection } from "@/components/sections/faq-section";
 import { CTASection } from "@/components/marketing/cta-section";
 import { StickyMobileCta } from "@/components/marketing/sticky-mobile-cta";
+import { PageViewTracker } from "@/components/analytics/page-view-tracker";
 
 export const metadata = buildMetadata({
   title: "Get Your Free Website Audit",
@@ -23,6 +24,7 @@ export const metadata = buildMetadata({
 export default function GetStartedPage() {
   return (
     <>
+      <PageViewTracker />
       <LandingHeader />
       <main id="main-content" className="flex-1">
         <LandingHero />

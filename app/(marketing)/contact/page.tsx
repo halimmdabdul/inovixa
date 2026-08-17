@@ -54,6 +54,7 @@ export default function ContactPage() {
               external={siteConfig.isBookingCallExternal}
               variant="secondary"
               className="mt-4"
+              trackLabel="Contact: Book a Free 15-Minute Website Strategy Call"
             >
               <CalendarCheck className="h-4 w-4" aria-hidden="true" />
               Book a Free 15-Minute Website Strategy Call

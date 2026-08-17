@@ -86,3 +86,33 @@ create policy "Authenticated users can update site settings"
   to authenticated
   using (true)
   with check (true);
+
+-- Inovixa Digital — analytics_events table
+--
+-- Backs the "which page and button do visitors click most" view at
+-- /admin/analytics. Deliberately minimal and anonymous: no IP address, no
+-- visitor ID, no user agent — just what was viewed/clicked and when. Same
+-- write pattern as leads: only the server (via the secret key) can insert,
+-- so a browser can never write directly. Only signed-in admins can read.
+
+create table if not exists public.analytics_events (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  event_type text not null check (event_type in ('page_view', 'click')),
+  path text not null,
+  label text
+);
+
+alter table public.analytics_events enable row level security;
+
+create policy "Authenticated users can view analytics"
+  on public.analytics_events
+  for select
+  to authenticated
+  using (true);
+
+-- No insert policy for anon/authenticated — events are written exclusively
+-- by the server using the secret key (see lib/supabase/admin.ts).
+
+create index if not exists analytics_events_created_at_idx on public.analytics_events (created_at desc);
+create index if not exists analytics_events_type_path_idx on public.analytics_events (event_type, path);

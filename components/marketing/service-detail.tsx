@@ -65,11 +65,15 @@ export function ServiceDetail({ service }: { service: Service }) {
               {service.longDescription}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button href="/audit">
+              <Button href="/audit" trackLabel={`Service (${service.shortName}): Get Your Free Website Audit`}>
                 Get Your Free Website Audit
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Button>
-              <Button href="/pricing" variant="secondary">
+              <Button
+                href="/pricing"
+                variant="secondary"
+                trackLabel={`Service (${service.shortName}): View Pricing`}
+              >
                 View Pricing
               </Button>
             </div>

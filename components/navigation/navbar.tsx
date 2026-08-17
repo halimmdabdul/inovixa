@@ -2,17 +2,20 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { primaryNav, siteConfig } from "@/lib/constants/site";
 import { Logo } from "@/components/navigation/logo";
 import { MobileNav } from "@/components/navigation/mobile-nav";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { trackEvent } from "@/app/actions/track-event";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     function onScroll() {
@@ -51,11 +54,14 @@ export function Navbar() {
               href={siteConfig.bookingCallUrl}
               target={siteConfig.isBookingCallExternal ? "_blank" : undefined}
               rel={siteConfig.isBookingCallExternal ? "noopener noreferrer" : undefined}
+              onClick={() =>
+                trackEvent({ eventType: "click", path: pathname, label: "Nav: Book a 15-Min Call" })
+              }
               className="text-sm font-medium text-slate-600 transition-colors hover:text-navy"
             >
               Book a 15-Min Call
             </a>
-            <Button href="/audit" size="sm">
+            <Button href="/audit" size="sm" trackLabel="Nav: Free Website Audit">
               Free Website Audit
             </Button>
           </div>

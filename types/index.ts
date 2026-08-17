@@ -156,6 +156,17 @@ export interface LeadRow {
   message: string | null;
 }
 
+export interface TeamMemberRow {
+  id: string;
+  created_at: string;
+  name: string;
+  role: string;
+  email: string | null;
+  bio: string | null;
+  photo_url: string | null;
+  display_order: number;
+}
+
 export interface BlogPost {
   slug: string;
   title: string;

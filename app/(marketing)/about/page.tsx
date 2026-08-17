@@ -20,6 +20,7 @@ import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CTASection } from "@/components/marketing/cta-section";
 import { FounderSection } from "@/components/sections/founder-section";
+import { TeamSection } from "@/components/sections/team-section";
 
 export const metadata = buildMetadata({
   title: "About",
@@ -171,6 +172,8 @@ export default function AboutPage() {
       </Section>
 
       <FounderSection />
+
+      <TeamSection />
 
       <Section tone="surface">
         <SectionHeading eyebrow="Working Together" title="How We Work" />

@@ -116,3 +116,39 @@ create policy "Authenticated users can view analytics"
 
 create index if not exists analytics_events_created_at_idx on public.analytics_events (created_at desc);
 create index if not exists analytics_events_type_path_idx on public.analytics_events (event_type, path);
+
+-- Inovixa Digital — team_members table
+--
+-- Backs the "Meet the Team" section, managed entirely from /admin/team.
+-- The table starts empty and the public site section stays hidden until an
+-- admin adds a real person — nothing here is seeded or fabricated. Publicly
+-- readable (it's meant to be shown on the site), but only a signed-in admin
+-- can add, edit, or remove entries.
+
+create table if not exists public.team_members (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null,
+  role text not null,
+  email text,
+  bio text,
+  photo_url text,
+  display_order integer not null default 0
+);
+
+alter table public.team_members enable row level security;
+
+create policy "Anyone can read team members"
+  on public.team_members
+  for select
+  to anon, authenticated
+  using (true);
+
+create policy "Authenticated users can manage team members"
+  on public.team_members
+  for all
+  to authenticated
+  using (true)
+  with check (true);
+
+create index if not exists team_members_order_idx on public.team_members (display_order, created_at);

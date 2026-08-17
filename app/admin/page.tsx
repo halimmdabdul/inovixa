@@ -27,6 +27,9 @@ export default async function AdminLeadsPage() {
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4 sm:px-8">
           <Logo />
           <div className="flex items-center gap-3">
+            <Link href="/admin/settings" className="text-sm text-slate-500 hover:text-navy">
+              SEO Settings
+            </Link>
             <Link href="/" className="text-sm text-slate-500 hover:text-navy">
               View site
             </Link>

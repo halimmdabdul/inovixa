@@ -1,11 +1,12 @@
 import Script from "next/script";
+import { getSiteSettings } from "@/lib/settings";
 
 /**
- * Renders nothing when NEXT_PUBLIC_GA_ID is unset, so the site works fully
- * without analytics configured.
+ * Renders nothing when no GA ID is set (in /admin/settings or
+ * NEXT_PUBLIC_GA_ID), so the site works fully without analytics configured.
  */
-export function GoogleAnalytics() {
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+export async function GoogleAnalytics() {
+  const { gaId } = await getSiteSettings();
 
   if (!gaId) return null;
 

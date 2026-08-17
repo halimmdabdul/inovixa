@@ -49,3 +49,40 @@ create index if not exists leads_created_at_idx on public.leads (created_at desc
 alter table public.leads drop constraint if exists leads_source_check;
 alter table public.leads add constraint leads_source_check
   check (source in ('website_audit', 'contact_form', 'seo_checker'));
+
+-- Inovixa Digital — site_settings table
+--
+-- Holds SEO settings editable from /admin/settings instead of requiring an
+-- env var change and redeploy: the Google Analytics Measurement ID, and the
+-- Google Search Console / Bing Webmaster Tools ownership verification codes.
+-- This is a single-row "singleton" table — the `id = true` check constraint
+-- makes a second row impossible. The row is publicly readable (these values
+-- already end up in public page source; none of them are secret) but only
+-- an authenticated admin can update it.
+
+create table if not exists public.site_settings (
+  id boolean primary key default true,
+  ga_id text,
+  google_site_verification text,
+  bing_site_verification text,
+  updated_at timestamptz not null default now(),
+  constraint site_settings_singleton check (id)
+);
+
+insert into public.site_settings (id) values (true)
+  on conflict (id) do nothing;
+
+alter table public.site_settings enable row level security;
+
+create policy "Anyone can read site settings"
+  on public.site_settings
+  for select
+  to anon, authenticated
+  using (true);
+
+create policy "Authenticated users can update site settings"
+  on public.site_settings
+  for update
+  to authenticated
+  using (true)
+  with check (true);

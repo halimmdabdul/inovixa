@@ -3,6 +3,7 @@ import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/lib/constants/site";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
+import { getSiteSettings } from "@/lib/settings";
 import { JsonLd } from "@/components/seo/json-ld";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 
@@ -18,33 +19,35 @@ const inter = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
-  title: {
-    default: `${siteConfig.name} | ${siteConfig.tagline}`,
-    template: `%s | ${siteConfig.name}`,
-  },
-  description: siteConfig.description,
-  openGraph: {
-    title: siteConfig.name,
+export async function generateMetadata(): Promise<Metadata> {
+  const { googleSiteVerification, bingSiteVerification } = await getSiteSettings();
+
+  return {
+    metadataBase: new URL(siteConfig.url),
+    title: {
+      default: `${siteConfig.name} | ${siteConfig.tagline}`,
+      template: `%s | ${siteConfig.name}`,
+    },
     description: siteConfig.description,
-    url: siteConfig.url,
-    siteName: siteConfig.name,
-    locale: siteConfig.locale,
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: siteConfig.name,
-    description: siteConfig.description,
-  },
-  verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
-    other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
-      ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
-      : undefined,
-  },
-};
+    openGraph: {
+      title: siteConfig.name,
+      description: siteConfig.description,
+      url: siteConfig.url,
+      siteName: siteConfig.name,
+      locale: siteConfig.locale,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteConfig.name,
+      description: siteConfig.description,
+    },
+    verification: {
+      google: googleSiteVerification || undefined,
+      other: bingSiteVerification ? { "msvalidate.01": bingSiteVerification } : undefined,
+    },
+  };
+}
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

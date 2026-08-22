@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/constants/site";
 import { services } from "@/lib/data/services";
 import { caseStudies } from "@/lib/data/case-studies";
-import { blogPosts } from "@/lib/data/blog-posts";
+import { getBlogPosts } from "@/lib/blog";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // No lastModified on static/service/work routes — their content doesn't
   // carry a tracked "last changed" date, and stamping every build with
   // new Date() would falsely signal to crawlers that these pages change
@@ -33,9 +33,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${siteConfig.url}/work/${project.slug}`,
   }));
 
-  const blogRoutes = blogPosts.map((post) => ({
+  const posts = await getBlogPosts();
+  const blogRoutes = posts.map((post) => ({
     url: `${siteConfig.url}/blog/${post.slug}`,
-    lastModified: new Date(post.publishedAt),
+    lastModified: new Date(post.updated_at),
   }));
 
   return [...staticRoutes, ...serviceRoutes, ...workRoutes, ...blogRoutes];

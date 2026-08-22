@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { blogPosts, getBlogPostBySlug } from "@/lib/data/blog-posts";
+import { getBlogPosts, getBlogPostBySlug } from "@/lib/blog";
+import { estimateReadingTime, splitParagraphs } from "@/lib/blog-utils";
 import { Section } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 import { CTASection } from "@/components/marketing/cta-section";
@@ -10,8 +11,9 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { articleJsonLd, breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { blogCategoryScenes } from "@/components/illustrations/blog-scenes";
 
-export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+export async function generateStaticParams() {
+  const posts = await getBlogPosts();
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
@@ -20,7 +22,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = await getBlogPostBySlug(slug);
   if (!post) return buildMetadata({ title: "Blog", description: "Article", path: "/blog" });
 
   return buildMetadata({
@@ -36,7 +38,7 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = await getBlogPostBySlug(slug);
 
   if (!post) notFound();
 
@@ -49,7 +51,7 @@ export default async function BlogPostPage({
           title: post.title,
           description: post.excerpt,
           path: `/blog/${post.slug}`,
-          publishedAt: post.publishedAt,
+          publishedAt: post.published_at,
         })}
       />
       <JsonLd
@@ -72,7 +74,7 @@ export default async function BlogPostPage({
 
           <div className="mt-6 flex items-center gap-3">
             <Badge tone="blue">{post.category}</Badge>
-            <span className="text-xs text-slate-400">{post.readingTime}</span>
+            <span className="text-xs text-slate-400">{estimateReadingTime(post.content)}</span>
           </div>
 
           <h1 className="mt-4 text-3xl font-bold tracking-tight text-navy sm:text-4xl">
@@ -84,7 +86,7 @@ export default async function BlogPostPage({
           </div>
 
           <div className="prose-content mt-8 space-y-5">
-            {post.content.map((paragraph, index) => (
+            {splitParagraphs(post.content).map((paragraph, index) => (
               <p key={index} className="text-base leading-relaxed text-slate-700">
                 {paragraph}
               </p>

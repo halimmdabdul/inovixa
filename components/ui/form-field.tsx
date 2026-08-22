@@ -109,7 +109,7 @@ export function SelectField({
         id={id}
         className={cn(fieldStyles, error && "border-red-400", className)}
         aria-invalid={Boolean(error)}
-        defaultValue=""
+        {...(props.value === undefined ? { defaultValue: "" } : {})}
         {...props}
       >
         <option value="" disabled>

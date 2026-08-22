@@ -130,20 +130,25 @@ are wired up yet.
 Marketing copy and structured content live in `lib/data/`:
 
 - `services.ts`, `industries.ts`, `pricing.ts`, `process.ts`, `problems.ts`,
-  `why-us.ts`, `faqs.ts`, `case-studies.ts`, `blog-posts.ts`,
-  `testimonials.ts`
+  `why-us.ts`, `faqs.ts`, `case-studies.ts`, `testimonials.ts`
 
 Editing these files updates the corresponding pages without touching
 component code. This structure is intentionally CMS-ready — a future
 migration to Sanity, Supabase, or another headless CMS only requires
 swapping how these files are populated, not the components that render them.
 
+Blog posts are the first piece to actually make that migration: they're
+stored in Supabase and managed from `/admin/blog` (see "Admin Dashboard"
+below) instead of a static file, so publishing or editing an article
+doesn't require a code change or redeploy.
+
 ## Admin Dashboard
 
 `/admin` is a login-protected dashboard for viewing leads submitted through
-the `/audit` and `/contact` forms. It's built on Supabase Auth + Postgres
-and does nothing until you connect a Supabase project — until then, `/admin`
-just redirects to a login page that says so.
+the `/audit` and `/contact` forms, managing the team section, and publishing
+blog posts. It's built on Supabase Auth + Postgres and does nothing until
+you connect a Supabase project — until then, `/admin` just redirects to a
+login page that says so.
 
 ### Setup
 
@@ -190,6 +195,14 @@ just redirects to a login page that says so.
 Lead storage runs independently of email notifications — if
 `RESEND_API_KEY` isn't set, leads are still stored (once Supabase is
 configured) and you'll just see them in `/admin` instead of your inbox.
+
+`/admin/blog` manages the `blog_posts` table the same way `/admin/team`
+manages `team_members` — full CRUD as the signed-in admin's own session (RLS
+grants authenticated users full access), not the service-role client. The
+public `/blog` pages read through `lib/blog.ts`, which caches reads with
+Next's `unstable_cache` and is invalidated via `updateTag("blog-posts")`
+whenever a post is created, edited, or deleted, so changes show up without a
+redeploy. Reading time is computed from word count rather than stored.
 
 ## Notes
 

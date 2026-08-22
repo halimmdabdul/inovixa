@@ -181,12 +181,23 @@ export interface TeamMemberRow {
   display_order: number;
 }
 
-export interface BlogPost {
+export type BlogCategory =
+  | "Website Design"
+  | "Website Redesign"
+  | "Local SEO"
+  | "Small Business Marketing"
+  | "Website Performance"
+  | "Conversion Optimization"
+  | "Business Technology";
+
+export interface BlogPostRow {
+  id: string;
+  created_at: string;
+  updated_at: string;
   slug: string;
   title: string;
   excerpt: string;
-  category: string;
-  publishedAt: string;
-  readingTime: string;
-  content: string[];
+  category: BlogCategory;
+  content: string;
+  published_at: string;
 }

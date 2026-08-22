@@ -21,6 +21,7 @@ export const blogPostSchema = z.object({
   category: z.enum(blogCategories, { message: "Select a category." }),
   content: z.string().trim().min(1, "Enter the article content."),
   publishedAt: z.string().trim().min(1, "Select a publish date."),
+  coverImageUrl: z.string().trim().url("Enter a valid image URL.").optional().or(z.literal("")),
 });
 
 export type BlogPostValues = z.infer<typeof blogPostSchema>;

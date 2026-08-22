@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { getBlogPosts } from "@/lib/blog";
 import { estimateReadingTime } from "@/lib/blog-utils";
@@ -40,7 +41,13 @@ export default async function BlogPage() {
                 href={`/blog/${post.slug}`}
                 className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md"
               >
-                <div className="aspect-[16/10] overflow-hidden">{Scene ? <Scene /> : null}</div>
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  {post.cover_image_url ? (
+                    <Image src={post.cover_image_url} alt="" fill className="object-cover" />
+                  ) : Scene ? (
+                    <Scene />
+                  ) : null}
+                </div>
                 <div className="flex flex-1 flex-col p-6">
                   <div className="flex items-center gap-3">
                     <Badge tone="blue">{post.category}</Badge>

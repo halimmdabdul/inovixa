@@ -42,6 +42,7 @@ export async function updateService(id: string, values: unknown): Promise<Servic
       features: data.features,
       ideal_for: data.idealFor,
       faqs: data.faqs,
+      image_url: data.imageUrl || null,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id);

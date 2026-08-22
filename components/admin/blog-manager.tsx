@@ -8,6 +8,7 @@ import { blogCategories } from "@/lib/validation/blog-post";
 import { createBlogPost, deleteBlogPost, updateBlogPost } from "@/app/actions/blog";
 import { estimateReadingTime } from "@/lib/blog-utils";
 import { InputField, SelectField, TextareaField } from "@/components/ui/form-field";
+import { ImageUploadField } from "@/components/admin/image-upload-field";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -26,6 +27,7 @@ const emptyForm = {
   category: "",
   content: "",
   publishedAt: new Date().toISOString().slice(0, 10),
+  coverImageUrl: "",
 };
 
 export function BlogManager({ posts }: { posts: BlogPostRow[] }) {
@@ -48,6 +50,7 @@ export function BlogManager({ posts }: { posts: BlogPostRow[] }) {
       category: post.category,
       content: post.content,
       publishedAt: post.published_at,
+      coverImageUrl: post.cover_image_url ?? "",
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -171,6 +174,19 @@ export function BlogManager({ posts }: { posts: BlogPostRow[] }) {
         />
 
         <div>
+          <ImageUploadField
+            label="Cover image"
+            id="postCoverImage"
+            folder="blog"
+            value={form.coverImageUrl}
+            onChange={(url) => setForm((current) => ({ ...current, coverImageUrl: url }))}
+          />
+          <p className="mt-1.5 text-xs text-slate-500">
+            Falls back to the category illustration when no cover image is set.
+          </p>
+        </div>
+
+        <div>
           <TextareaField
             label="Article content"
             id="postContent"
@@ -219,6 +235,14 @@ export function BlogManager({ posts }: { posts: BlogPostRow[] }) {
                 key={post.id}
                 className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5"
               >
+                {post.cover_image_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={post.cover_image_url}
+                    alt=""
+                    className="h-14 w-14 shrink-0 rounded-lg border border-slate-200 object-cover"
+                  />
+                ) : null}
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <Badge tone="blue">{post.category}</Badge>

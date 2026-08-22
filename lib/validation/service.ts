@@ -16,6 +16,7 @@ export const serviceSchema = z.object({
       }),
     )
     .min(1, "Add at least one FAQ."),
+  imageUrl: z.string().trim().url("Enter a valid image URL.").optional().or(z.literal("")),
 });
 
 export type ServiceValues = z.infer<typeof serviceSchema>;

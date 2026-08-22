@@ -6,6 +6,7 @@ import { Loader2, Pencil, Plus, Trash2, X } from "lucide-react";
 import type { ServiceRow } from "@/types";
 import { updateService } from "@/app/actions/services";
 import { InputField, TextareaField } from "@/components/ui/form-field";
+import { ImageUploadField } from "@/components/admin/image-upload-field";
 import { Button } from "@/components/ui/button";
 
 interface FaqDraft {
@@ -22,6 +23,7 @@ interface FormState {
   featuresText: string;
   idealForText: string;
   faqs: FaqDraft[];
+  imageUrl: string;
 }
 
 function toFormState(service: ServiceRow): FormState {
@@ -34,6 +36,7 @@ function toFormState(service: ServiceRow): FormState {
     featuresText: service.features.join("\n"),
     idealForText: service.ideal_for.join("\n"),
     faqs: service.faqs.length > 0 ? service.faqs.map((faq) => ({ ...faq })) : [{ question: "", answer: "" }],
+    imageUrl: service.image_url ?? "",
   };
 }
 
@@ -78,6 +81,7 @@ function ServiceEditor({ service, onCancel, onSaved }: { service: ServiceRow; on
       features: linesToList(form.featuresText),
       idealFor: linesToList(form.idealForText),
       faqs: form.faqs,
+      imageUrl: form.imageUrl,
     });
 
     setStatus({ ok: result.success, message: result.message });
@@ -149,6 +153,19 @@ function ServiceEditor({ service, onCancel, onSaved }: { service: ServiceRow; on
         onChange={(event) => setForm((current) => ({ ...current, ctaLabel: event.target.value }))}
         required
       />
+
+      <div>
+        <ImageUploadField
+          label="Image"
+          id={`svc-image-${service.id}`}
+          folder="services"
+          value={form.imageUrl}
+          onChange={(url) => setForm((current) => ({ ...current, imageUrl: url }))}
+        />
+        <p className="mt-1.5 text-xs text-slate-500">
+          Falls back to the built-in illustration when no image is set.
+        </p>
+      </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
@@ -268,9 +285,19 @@ export function ServicesManager({ services }: { services: ServiceRow[] }) {
             key={service.id}
             className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5"
           >
-            <div className="min-w-0">
-              <p className="font-semibold text-navy">{service.name}</p>
-              <p className="truncate text-sm text-slate-500">/services/{service.slug}</p>
+            <div className="flex min-w-0 items-center gap-4">
+              {service.image_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={service.image_url}
+                  alt=""
+                  className="h-14 w-14 shrink-0 rounded-lg border border-slate-200 object-cover"
+                />
+              ) : null}
+              <div className="min-w-0">
+                <p className="font-semibold text-navy">{service.name}</p>
+                <p className="truncate text-sm text-slate-500">/services/{service.slug}</p>
+              </div>
             </div>
             <Button type="button" variant="secondary" size="sm" onClick={() => setEditingId(service.id)}>
               <Pencil className="h-4 w-4" aria-hidden="true" />

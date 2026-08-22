@@ -18,6 +18,7 @@ function toService(row: ServiceRow): Service {
     features: row.features,
     idealFor: row.ideal_for,
     faqs: row.faqs,
+    imageUrl: row.image_url,
   };
 }
 

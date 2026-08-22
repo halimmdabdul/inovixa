@@ -35,6 +35,7 @@ export async function createBlogPost(values: unknown): Promise<BlogActionResult>
     category: data.category,
     content: data.content,
     published_at: data.publishedAt,
+    cover_image_url: data.coverImageUrl || null,
   });
 
   if (error) {
@@ -70,6 +71,7 @@ export async function updateBlogPost(id: string, values: unknown): Promise<BlogA
       category: data.category,
       content: data.content,
       published_at: data.publishedAt,
+      cover_image_url: data.coverImageUrl || null,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id);

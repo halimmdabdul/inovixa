@@ -6,6 +6,7 @@ import { Loader2, Plus, Trash2 } from "lucide-react";
 import type { TeamMemberRow } from "@/types";
 import { addTeamMember, removeTeamMember } from "@/app/actions/team";
 import { InputField, TextareaField } from "@/components/ui/form-field";
+import { ImageUploadField } from "@/components/admin/image-upload-field";
 import { Button } from "@/components/ui/button";
 
 function initials(name: string) {
@@ -91,15 +92,9 @@ export function TeamManager({ members }: { members: TeamMemberRow[] }) {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
-          <InputField
-            label="Photo URL"
-            id="memberPhotoUrl"
-            optional
-            placeholder="https://..."
-            value={photoUrl}
-            onChange={(event) => setPhotoUrl(event.target.value)}
-          />
         </div>
+
+        <ImageUploadField label="Photo" id="memberPhoto" folder="team" value={photoUrl} onChange={setPhotoUrl} />
 
         <TextareaField
           label="Short Bio"

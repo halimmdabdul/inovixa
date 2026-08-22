@@ -1,7 +1,45 @@
--- Inovixa Digital — leads table
+-- Inovixa Digital — schema
 --
 -- Run this once in your Supabase project's SQL Editor
 -- (Dashboard -> SQL Editor -> New query -> paste -> Run).
+
+-- "media" storage bucket
+--
+-- Holds admin-uploaded images: team photos, blog cover images, and service
+-- images (see app/actions/upload.ts). Public read so the images work on the
+-- public site; only a signed-in admin can upload, replace, or delete files.
+-- Uploads are organized under team/, blog/, and services/ path prefixes
+-- within this one bucket rather than three separate buckets.
+
+insert into storage.buckets (id, name, public)
+values ('media', 'media', true)
+on conflict (id) do nothing;
+
+create policy "Anyone can view media"
+  on storage.objects
+  for select
+  using (bucket_id = 'media');
+
+create policy "Authenticated users can upload media"
+  on storage.objects
+  for insert
+  to authenticated
+  with check (bucket_id = 'media');
+
+create policy "Authenticated users can update media"
+  on storage.objects
+  for update
+  to authenticated
+  using (bucket_id = 'media');
+
+create policy "Authenticated users can delete media"
+  on storage.objects
+  for delete
+  to authenticated
+  using (bucket_id = 'media');
+
+-- Inovixa Digital — leads table
+--
 --
 -- This table stores submissions from both the /audit and /contact forms.
 -- Row-level security is enabled with a SELECT-only policy for signed-in
@@ -177,8 +215,13 @@ create table if not exists public.services (
   cta_label text not null,
   features text[] not null default '{}',
   ideal_for text[] not null default '{}',
-  faqs jsonb not null default '[]'
+  faqs jsonb not null default '[]',
+  image_url text
 );
+
+-- Migration: adds the service image column for installs that ran this
+-- schema before image uploads existed. Safe to run even if already applied.
+alter table public.services add column if not exists image_url text;
 
 alter table public.services enable row level security;
 
@@ -228,8 +271,13 @@ create table if not exists public.blog_posts (
     'Website Performance', 'Conversion Optimization', 'Business Technology'
   )),
   content text not null,
-  published_at date not null default current_date
+  published_at date not null default current_date,
+  cover_image_url text
 );
+
+-- Migration: adds the cover image column for installs that ran this schema
+-- before image uploads existed. Safe to run even if already applied.
+alter table public.blog_posts add column if not exists cover_image_url text;
 
 alter table public.blog_posts enable row level security;
 

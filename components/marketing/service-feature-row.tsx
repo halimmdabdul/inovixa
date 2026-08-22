@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import type { Service } from "@/types";
 import { serviceScenes } from "@/components/illustrations/service-scenes";
@@ -15,8 +16,17 @@ export function ServiceFeatureRow({
 
   return (
     <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-      <div className={cn("aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200 shadow-sm", reversed && "lg:order-2")}>
-        {Scene ? <Scene /> : null}
+      <div
+        className={cn(
+          "relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200 shadow-sm",
+          reversed && "lg:order-2",
+        )}
+      >
+        {service.imageUrl ? (
+          <Image src={service.imageUrl} alt="" fill className="object-cover" />
+        ) : Scene ? (
+          <Scene />
+        ) : null}
       </div>
       <div className={reversed ? "lg:order-1" : undefined}>
         <h3 className="text-2xl font-bold tracking-tight text-navy sm:text-3xl">{service.name}</h3>

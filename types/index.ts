@@ -10,6 +10,7 @@ export interface Service {
   features: string[];
   idealFor: string[];
   faqs: FAQItem[];
+  imageUrl: string | null;
 }
 
 export interface ServiceRow {
@@ -25,6 +26,7 @@ export interface ServiceRow {
   features: string[];
   ideal_for: string[];
   faqs: FAQItem[];
+  image_url: string | null;
 }
 
 export interface Problem {
@@ -214,4 +216,5 @@ export interface BlogPostRow {
   category: BlogCategory;
   content: string;
   published_at: string;
+  cover_image_url: string | null;
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Check, ChevronRight, ShieldCheck } from "lucide-react";
 import type { Service } from "@/types";
 import { getServices } from "@/lib/services";
@@ -87,8 +88,12 @@ export async function ServiceDetail({ service }: { service: Service }) {
             </Link>
           </div>
 
-          <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
-            {Scene ? <Scene /> : null}
+          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+            {service.imageUrl ? (
+              <Image src={service.imageUrl} alt="" fill className="object-cover" priority />
+            ) : Scene ? (
+              <Scene />
+            ) : null}
           </div>
         </div>
       </Section>

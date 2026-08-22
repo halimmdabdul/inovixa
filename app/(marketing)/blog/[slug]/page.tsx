@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { getBlogPosts, getBlogPostBySlug } from "@/lib/blog";
@@ -81,8 +82,12 @@ export default async function BlogPostPage({
             {post.title}
           </h1>
 
-          <div className="mt-8 aspect-[16/9] overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
-            {Scene ? <Scene /> : null}
+          <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+            {post.cover_image_url ? (
+              <Image src={post.cover_image_url} alt="" fill className="object-cover" priority />
+            ) : Scene ? (
+              <Scene />
+            ) : null}
           </div>
 
           <div className="prose-content mt-8 space-y-5">

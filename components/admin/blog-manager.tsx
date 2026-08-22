@@ -6,9 +6,10 @@ import { Loader2, Pencil, Plus, Trash2, X } from "lucide-react";
 import type { BlogPostRow } from "@/types";
 import { blogCategories } from "@/lib/validation/blog-post";
 import { createBlogPost, deleteBlogPost, updateBlogPost } from "@/app/actions/blog";
-import { estimateReadingTime } from "@/lib/blog-utils";
+import { estimateReadingTime, toEditableHtml } from "@/lib/blog-utils";
 import { InputField, SelectField, TextareaField } from "@/components/ui/form-field";
 import { ImageUploadField } from "@/components/admin/image-upload-field";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -48,7 +49,7 @@ export function BlogManager({ posts }: { posts: BlogPostRow[] }) {
       title: post.title,
       excerpt: post.excerpt,
       category: post.category,
-      content: post.content,
+      content: toEditableHtml(post.content),
       publishedAt: post.published_at,
       coverImageUrl: post.cover_image_url ?? "",
     });
@@ -187,17 +188,17 @@ export function BlogManager({ posts }: { posts: BlogPostRow[] }) {
         </div>
 
         <div>
-          <TextareaField
-            label="Article content"
+          <label htmlFor="postContent" className="mb-1.5 block text-sm font-medium text-foreground">
+            Article content
+          </label>
+          <RichTextEditor
+            key={editingId ?? "new"}
             id="postContent"
-            rows={14}
             value={form.content}
-            onChange={(event) => setForm((current) => ({ ...current, content: event.target.value }))}
-            required
+            onChange={(html) => setForm((current) => ({ ...current, content: html }))}
           />
           <p className="mt-1.5 text-xs text-slate-500">
-            Separate paragraphs with a blank line. Reading time is calculated
-            automatically ({estimateReadingTime(form.content)}).
+            Reading time is calculated automatically ({estimateReadingTime(form.content)}).
           </p>
         </div>
 

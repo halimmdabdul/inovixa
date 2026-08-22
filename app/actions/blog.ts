@@ -3,6 +3,7 @@
 import { updateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { blogPostSchema } from "@/lib/validation/blog-post";
+import { sanitizeArticleHtml } from "@/lib/sanitize-html";
 
 export interface BlogActionResult {
   success: boolean;
@@ -33,7 +34,7 @@ export async function createBlogPost(values: unknown): Promise<BlogActionResult>
     title: data.title,
     excerpt: data.excerpt,
     category: data.category,
-    content: data.content,
+    content: sanitizeArticleHtml(data.content),
     published_at: data.publishedAt,
     cover_image_url: data.coverImageUrl || null,
   });
@@ -69,7 +70,7 @@ export async function updateBlogPost(id: string, values: unknown): Promise<BlogA
       title: data.title,
       excerpt: data.excerpt,
       category: data.category,
-      content: data.content,
+      content: sanitizeArticleHtml(data.content),
       published_at: data.publishedAt,
       cover_image_url: data.coverImageUrl || null,
       updated_at: new Date().toISOString(),

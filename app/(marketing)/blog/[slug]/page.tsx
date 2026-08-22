@@ -4,7 +4,7 @@ import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { getBlogPosts, getBlogPostBySlug } from "@/lib/blog";
-import { estimateReadingTime, splitParagraphs } from "@/lib/blog-utils";
+import { estimateReadingTime, isHtmlContent, splitParagraphs } from "@/lib/blog-utils";
 import { Section } from "@/components/ui/section";
 import { Badge } from "@/components/ui/badge";
 import { CTASection } from "@/components/marketing/cta-section";
@@ -90,13 +90,19 @@ export default async function BlogPostPage({
             ) : null}
           </div>
 
-          <div className="prose-content mt-8 space-y-5">
-            {splitParagraphs(post.content).map((paragraph, index) => (
-              <p key={index} className="text-base leading-relaxed text-slate-700">
-                {paragraph}
-              </p>
-            ))}
-          </div>
+          {isHtmlContent(post.content) ? (
+            // Sanitized server-side before storage (see lib/sanitize-html.ts
+            // and app/actions/blog.ts) — never rendered from unsanitized input.
+            <div className="rich-article mt-8" dangerouslySetInnerHTML={{ __html: post.content }} />
+          ) : (
+            <div className="prose-content mt-8 space-y-5">
+              {splitParagraphs(post.content).map((paragraph, index) => (
+                <p key={index} className="text-base leading-relaxed text-slate-700">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
       </Section>
 

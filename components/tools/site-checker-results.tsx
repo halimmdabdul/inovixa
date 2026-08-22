@@ -1,6 +1,7 @@
 import { AlertTriangle, CalendarCheck, CheckCircle2, RotateCcw, XCircle } from "lucide-react";
 import type { SeoCheckResult } from "@/types";
 import { Button } from "@/components/ui/button";
+import { BookCallLink } from "@/components/marketing/book-call-link";
 import { cn } from "@/lib/utils";
 import { scoreTone } from "@/lib/seo/score-tone";
 
@@ -72,10 +73,10 @@ export function SiteCheckerResults({
           Want us to explain how to fix these issues?
         </p>
         <div className="flex flex-col gap-3 sm:flex-row">
-          <Button href="/contact" trackLabel="SEO Checker: Book a Free 15-Minute Website Strategy Call">
+          <BookCallLink className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-blue px-6 py-3.5 text-base font-semibold text-white transition-colors duration-150 hover:bg-brand-blue-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue focus-visible:ring-offset-2">
             <CalendarCheck className="h-4 w-4" aria-hidden="true" />
             Book a Free 15-Minute Website Strategy Call
-          </Button>
+          </BookCallLink>
           <Button variant="secondary" onClick={onReset} type="button">
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
             Check Another Website

@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
-import { primaryNav, siteConfig } from "@/lib/constants/site";
+import { primaryNav } from "@/lib/constants/site";
+import { BookCallLink } from "@/components/marketing/book-call-link";
 import { Logo } from "@/components/navigation/logo";
 import { MobileNav } from "@/components/navigation/mobile-nav";
 import { Button } from "@/components/ui/button";
@@ -50,17 +51,14 @@ export function Navbar() {
             ))}
           </nav>
           <div className="hidden items-center gap-4 md:flex">
-            <a
-              href={siteConfig.bookingCallUrl}
-              target={siteConfig.isBookingCallExternal ? "_blank" : undefined}
-              rel={siteConfig.isBookingCallExternal ? "noopener noreferrer" : undefined}
+            <BookCallLink
               onClick={() =>
                 trackEvent({ eventType: "click", path: pathname, label: "Nav: Book a 15-Min Call" })
               }
               className="text-sm font-medium text-slate-600 transition-colors hover:text-navy"
             >
               Book a 15-Min Call
-            </a>
+            </BookCallLink>
             <Button href="/audit" size="sm" trackLabel="Nav: Free Website Audit">
               Free Website Audit
             </Button>

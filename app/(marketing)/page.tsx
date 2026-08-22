@@ -13,7 +13,6 @@ import { ExpectationsSection } from "@/components/sections/expectations-section"
 import { FAQSection } from "@/components/sections/faq-section";
 import { CTASection } from "@/components/marketing/cta-section";
 import { SiteCheckerSection } from "@/components/sections/site-checker-section";
-import { FounderSection } from "@/components/sections/founder-section";
 import { ClientResultsSection } from "@/components/sections/client-results-section";
 
 export const metadata = buildMetadata({
@@ -35,12 +34,11 @@ export default function HomePage() {
       <FeaturedWork />
       <ClientResultsSection />
       <CTASection
-        title="Ready for a website like this?"
+        title="Want a clear plan for your website?"
         secondaryHref="/pricing"
         secondaryLabel="See Pricing"
       />
       <WhyInovixa />
-      <FounderSection />
       <HowItWorks />
       <IndustriesSection />
       <PricingPreview />
@@ -48,7 +46,7 @@ export default function HomePage() {
       <FAQSection />
       <CTASection
         title="Ready for a website that works as hard as you do?"
-        description="Get a free, no-obligation website audit and see exactly how to turn your website into a customer-generating asset."
+        description="Get a free, no-obligation website audit with practical recommendations for clarity, performance, search visibility, and conversion."
         secondaryHref="/contact"
         secondaryLabel="Discuss Your Project"
       />

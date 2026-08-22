@@ -152,3 +152,47 @@ create policy "Authenticated users can manage team members"
   with check (true);
 
 create index if not exists team_members_order_idx on public.team_members (display_order, created_at);
+
+-- Inovixa Digital — call_bookings table
+--
+-- Backs the in-house "Book a 15-Min Call" scheduler (no third-party
+-- scheduling account required). Same write pattern as leads: only the
+-- server can insert, using the secret key, so a browser can never write
+-- directly. The `unique (scheduled_at)` constraint is what actually
+-- prevents double-booking a slot under concurrent requests — the insert
+-- fails at the database level if two people submit the same time within
+-- the same race window, and the server action surfaces that as a
+-- "no longer available" message instead of silently overwriting it.
+
+create table if not exists public.call_bookings (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  scheduled_at timestamptz not null unique,
+  name text not null,
+  email text not null,
+  phone text,
+  business_name text,
+  message text,
+  status text not null default 'scheduled'
+    check (status in ('scheduled', 'completed', 'cancelled', 'no_show'))
+);
+
+alter table public.call_bookings enable row level security;
+
+create policy "Authenticated users can view call bookings"
+  on public.call_bookings
+  for select
+  to authenticated
+  using (true);
+
+create policy "Authenticated users can update call bookings"
+  on public.call_bookings
+  for update
+  to authenticated
+  using (true)
+  with check (true);
+
+-- No insert/delete policy for anon/authenticated — bookings are written
+-- exclusively by the server using the secret key (see lib/supabase/admin.ts).
+
+create index if not exists call_bookings_scheduled_at_idx on public.call_bookings (scheduled_at);

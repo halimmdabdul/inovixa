@@ -17,14 +17,6 @@ function resolveSiteUrl() {
   }
 }
 
-/**
- * Where "Book a Call" links go. Set NEXT_PUBLIC_BOOKING_CALL_URL to a
- * scheduler link (e.g. a Calendly event URL) once one exists. Until then
- * this falls back to the contact page, so the CTA is always a real,
- * working destination rather than a dead link.
- */
-const bookingCallUrl = process.env.NEXT_PUBLIC_BOOKING_CALL_URL?.trim() || "/contact";
-
 export const siteConfig = {
   name: "Inovixa Digital",
   shortName: "Inovixa",
@@ -34,8 +26,6 @@ export const siteConfig = {
   url: resolveSiteUrl(),
   email: "hello@inovixadigital.com",
   locale: "en_US",
-  bookingCallUrl,
-  isBookingCallExternal: /^https?:\/\//.test(bookingCallUrl),
 } as const;
 
 export const primaryNav = [

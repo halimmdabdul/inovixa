@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
-import { primaryNav, siteConfig } from "@/lib/constants/site";
+import { primaryNav } from "@/lib/constants/site";
+import { BookCallLink } from "@/components/marketing/book-call-link";
 import { Button } from "@/components/ui/button";
 import { trackEvent } from "@/app/actions/track-event";
 
@@ -58,10 +59,7 @@ export function MobileNav({
           >
             Free Website Audit
           </Button>
-          <a
-            href={siteConfig.bookingCallUrl}
-            target={siteConfig.isBookingCallExternal ? "_blank" : undefined}
-            rel={siteConfig.isBookingCallExternal ? "noopener noreferrer" : undefined}
+          <BookCallLink
             onClick={() => {
               trackEvent({ eventType: "click", path: pathname, label: "Mobile Nav: Book a 15-Min Call" });
               onClose();
@@ -69,7 +67,7 @@ export function MobileNav({
             className="block text-center text-sm font-medium text-slate-600 hover:text-navy"
           >
             Book a 15-Min Call
-          </a>
+          </BookCallLink>
         </div>
       </div>
     </div>

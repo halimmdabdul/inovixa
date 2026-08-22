@@ -156,6 +156,20 @@ export interface LeadRow {
   message: string | null;
 }
 
+export type BookingStatus = "scheduled" | "completed" | "cancelled" | "no_show";
+
+export interface CallBookingRow {
+  id: string;
+  created_at: string;
+  scheduled_at: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  business_name: string | null;
+  message: string | null;
+  status: BookingStatus;
+}
+
 export interface TeamMemberRow {
   id: string;
   created_at: string;

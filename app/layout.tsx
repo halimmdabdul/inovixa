@@ -6,6 +6,7 @@ import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonld";
 import { getSiteSettings } from "@/lib/settings";
 import { JsonLd } from "@/components/seo/json-ld";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { BookCallProvider } from "@/components/marketing/book-call-provider";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -61,7 +62,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={websiteJsonLd()} />
-        {children}
+        <BookCallProvider>{children}</BookCallProvider>
         <GoogleAnalytics />
       </body>
     </html>

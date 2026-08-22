@@ -20,6 +20,15 @@ export function Footer() {
           <div className="col-span-2 lg:col-span-2">
             <Logo inverted />
             <p className="mt-4 max-w-xs text-sm text-slate-400">{siteConfig.tagline}</p>
+            <a
+              href={`mailto:${siteConfig.email}`}
+              className="mt-3 inline-block text-sm text-slate-300 transition-colors hover:text-white"
+            >
+              {siteConfig.email}
+            </a>
+            <p className="mt-2 text-xs leading-relaxed text-slate-500">
+              Founder-led in Japan. Working remotely with businesses worldwide.
+            </p>
           </div>
           {columns.map((column) => (
             <div key={column.title}>
@@ -43,7 +52,7 @@ export function Footer() {
           <p>
             &copy; {year} {siteConfig.name}. All rights reserved.
           </p>
-          <p>Serving local businesses across the USA, UK, and beyond.</p>
+          <p>Clear scope. Published starting prices. No invented results.</p>
         </div>
       </Container>
     </footer>

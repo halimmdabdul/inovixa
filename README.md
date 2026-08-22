@@ -197,5 +197,6 @@ configured) and you'll just see them in `/admin` instead of your inbox.
   `lib/data/testimonials.ts`.
 - Work/case studies are currently labeled concept projects for fictional
   businesses. No fabricated metrics are included.
-- `/privacy` and `/terms` are general starter templates and should be
-  reviewed by a qualified professional before launch.
+- `/privacy` and `/terms` reflect the current forms, analytics, service
+  providers, portfolio disclosures, and published pricing. Revisit them when
+  any of those practices change and obtain professional legal review where needed.

@@ -14,6 +14,7 @@ import { submitAuditRequest } from "@/app/actions/audit";
 import { currentTimestamp } from "@/lib/form-timestamp";
 import { InputField, SelectField, TextareaField } from "@/components/ui/form-field";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type FormFields = Omit<AuditFormValues, "formRenderedAt">;
 
@@ -111,7 +112,7 @@ export function WebsiteAuditForm() {
           </div>
 
           <Button type="button" onClick={goToStep2} className="w-full">
-            Analyze My Website
+            Continue to Audit Request
           </Button>
         </div>
       ) : (
@@ -179,7 +180,12 @@ export function WebsiteAuditForm() {
               {...register("consent")}
             />
             <label htmlFor="consent" className="text-sm text-slate-600">
-              I agree to be contacted by Inovixa Digital about my website audit.
+              I agree to be contacted by Inovixa Digital about this audit request.
+              My information will be handled as described in the{" "}
+              <Link href="/privacy" className="font-medium text-brand-blue hover:underline">
+                privacy policy
+              </Link>
+              .
             </label>
           </div>
           {errors.consent?.message ? (

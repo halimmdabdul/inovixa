@@ -14,6 +14,7 @@ import { submitContactRequest } from "@/app/actions/contact";
 import { currentTimestamp } from "@/lib/form-timestamp";
 import { InputField, SelectField, TextareaField } from "@/components/ui/form-field";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type FormFields = Omit<ContactFormValues, "formRenderedAt">;
 
@@ -139,6 +140,15 @@ export function ContactForm() {
         error={errors.projectDetails?.message}
         {...register("projectDetails")}
       />
+
+      <p className="text-xs leading-relaxed text-slate-500">
+        Your details are used only to respond to this inquiry and manage the
+        project conversation. See our{" "}
+        <Link href="/privacy" className="font-medium text-brand-blue hover:underline">
+          privacy policy
+        </Link>
+        .
+      </p>
 
       {status === "error" ? (
         <p role="alert" className="text-sm text-red-600">

@@ -10,9 +10,9 @@ export function FeaturedWork() {
   return (
     <Section tone="surface" id="work">
       <SectionHeading
-        eyebrow="Featured Work"
-        title="A Look at Our Design Approach"
-        description="Concept projects that show how we approach design, structure, and conversion for local service businesses."
+        eyebrow="Design Concepts"
+        title="See How We Think Before You Hire Us"
+        description="These fictional briefs demonstrate our approach to design, structure, and conversion. They are not presented as client work and contain no invented results."
       />
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {featured.map((project) => (
@@ -21,7 +21,7 @@ export function FeaturedWork() {
       </div>
       <div className="mt-10 text-center">
         <Button href="/work" variant="secondary">
-          View All Work
+          Explore All Concepts
         </Button>
       </div>
     </Section>

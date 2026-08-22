@@ -22,10 +22,16 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const project = getCaseStudyBySlug(slug);
-  if (!project) return buildMetadata({ title: "Work", description: "Case study", path: "/work" });
+  if (!project) {
+    return buildMetadata({
+      title: "Design Concepts",
+      description: "Fictional design exercises showing the Inovixa approach.",
+      path: "/work",
+    });
+  }
 
   return buildMetadata({
-    title: project.title,
+    title: `${project.title} Design Concept`,
     description: project.summary,
     path: `/work/${project.slug}`,
   });
@@ -36,10 +42,10 @@ function projectDomain(title: string) {
 }
 
 /**
- * Flavors the before/after mockups with real (if generic) headline and body
+ * Flavors the before/after mockups with specific, fictional headline and body
  * copy per industry so the comparison feels specific and relatable, without
- * using any real business's actual website — this is original placeholder
- * copy, not a screenshot.
+ * without using any real business's actual website. This is illustrative
+ * copy, not a screenshot or a record of completed client work.
  */
 const mockupCopy: Record<string, { old: OldSiteCopy; new: NewSiteCopy }> = {
   Roofing: {
@@ -149,9 +155,9 @@ export default async function CaseStudyPage({
       {/* Before / after */}
       <Section tone="surface">
         <SectionHeading
-          eyebrow="The Transformation"
-          title="From Struggling Site to a Working Website"
-          description={`A side-by-side look at ${project.title}'s website before and after the redesign. This is an illustrated concept, not a screenshot of any real business's site.`}
+          eyebrow="The Design Exercise"
+          title="From a Weak Experience to a Clearer One"
+          description={`An illustrated before-and-after concept for ${project.title}. This is not a real business, client engagement, or performance claim.`}
         />
         <div className="mx-auto mt-12 grid max-w-5xl gap-8 lg:grid-cols-2">
           <div>
@@ -174,7 +180,7 @@ export default async function CaseStudyPage({
             </div>
             <div>
               <h2 className="text-sm font-semibold uppercase tracking-wide text-red-500">
-                The Challenge
+                The Fictional Brief
               </h2>
               <p className="mt-2 text-base leading-relaxed text-slate-700">{project.problem}</p>
               <p className="mt-3 text-base leading-relaxed text-slate-700">{project.before}</p>
@@ -187,8 +193,8 @@ export default async function CaseStudyPage({
       <Section tone="surface">
         <SectionHeading
           eyebrow="What We Improved"
-          title="Exactly What Changed, and Why It Matters"
-          description="A plain-language look at each area we worked on, before and after."
+          title="What We Would Change, and Why"
+          description="A plain-language look at the proposed improvements in this design exercise."
         />
         <div className="mx-auto mt-12 max-w-3xl">
           <ImprovementsList improvements={project.improvements} />
@@ -216,7 +222,7 @@ export default async function CaseStudyPage({
         </div>
       </Section>
 
-      <CTASection title="Ready for a website like this?" />
+      <CTASection title="Want this level of thought applied to your website?" />
     </>
   );
 }

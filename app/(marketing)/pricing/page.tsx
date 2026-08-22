@@ -31,7 +31,8 @@ export default function PricingPage() {
           ))}
         </div>
         <p className="mt-8 text-center text-sm text-slate-500">
-          Final pricing depends on project requirements.
+          Prices are in USD. Your exact scope, third-party costs, timeline, and
+          payment schedule are confirmed in writing before work begins.
         </p>
       </Section>
 

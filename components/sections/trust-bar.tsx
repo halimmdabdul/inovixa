@@ -13,7 +13,7 @@ export function TrustBar() {
   return (
     <Section tone="surface" className="border-y border-slate-200 py-12 sm:py-14">
       <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-brand-blue">
-        Built for Growing Local Businesses
+        Included in Every Website Build
       </p>
       <div className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
         {indicators.map((indicator) => (

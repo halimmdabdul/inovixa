@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import type { CaseStudy } from "@/types";
 import { Badge } from "@/components/ui/badge";
@@ -12,8 +13,12 @@ export function CaseStudyCard({ project }: { project: CaseStudy }) {
       href={`/work/${project.slug}`}
       className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md"
     >
-      <div className="aspect-[16/10] overflow-hidden">
-        {Scene ? <Scene /> : null}
+      <div className="relative aspect-[16/10] overflow-hidden">
+        {project.coverImageUrl ? (
+          <Image src={project.coverImageUrl} alt="" fill className="object-cover" />
+        ) : Scene ? (
+          <Scene />
+        ) : null}
       </div>
       <div className="flex flex-1 flex-col p-6">
         <div className="flex items-center gap-2">

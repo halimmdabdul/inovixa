@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
-import { AlertTriangle, Search, Target } from "lucide-react";
+import Image from "next/image";
+import { AlertTriangle, Code2, Gauge, Palette, Search, Smartphone, Target } from "lucide-react";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { caseStudies, getCaseStudyBySlug } from "@/lib/data/case-studies";
+import { getCaseStudies, getCaseStudyBySlug } from "@/lib/case-studies";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Badge } from "@/components/ui/badge";
@@ -10,8 +11,10 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { BrowserMockup, type NewSiteCopy, type OldSiteCopy } from "@/components/hero/browser-mockup";
 import { ImprovementsList } from "@/components/marketing/improvements-list";
+import { caseStudyScenes } from "@/components/illustrations/case-study-scenes";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const caseStudies = await getCaseStudies();
   return caseStudies.map((project) => ({ slug: project.slug }));
 }
 
@@ -21,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = getCaseStudyBySlug(slug);
+  const project = await getCaseStudyBySlug(slug);
   if (!project) {
     return buildMetadata({
       title: "Design Concepts",
@@ -45,7 +48,9 @@ function projectDomain(title: string) {
  * Flavors the before/after mockups with specific, fictional headline and body
  * copy per industry so the comparison feels specific and relatable, without
  * without using any real business's actual website. This is illustrative
- * copy, not a screenshot or a record of completed client work.
+ * copy, not a screenshot or a record of completed client work. Case studies
+ * in an industry not listed here just render the mockup's generic default
+ * copy instead — this map only covers the three seeded launch industries.
  */
 const mockupCopy: Record<string, { old: OldSiteCopy; new: NewSiteCopy }> = {
   Roofing: {
@@ -122,12 +127,13 @@ export default async function CaseStudyPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = getCaseStudyBySlug(slug);
+  const project = await getCaseStudyBySlug(slug);
 
   if (!project) notFound();
 
   const domain = projectDomain(project.title);
   const copy = mockupCopy[project.industry];
+  const Scene = caseStudyScenes[project.slug];
 
   return (
     <>
@@ -150,6 +156,16 @@ export default async function CaseStudyPage({
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-slate-600">{project.summary}</p>
         </div>
+
+        {project.coverImageUrl || Scene ? (
+          <div className="relative mx-auto mt-10 aspect-[16/9] max-w-4xl overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
+            {project.coverImageUrl ? (
+              <Image src={project.coverImageUrl} alt="" fill className="object-cover" priority />
+            ) : Scene ? (
+              <Scene />
+            ) : null}
+          </div>
+        ) : null}
       </Section>
 
       {/* Before / after */}
@@ -186,6 +202,7 @@ export default async function CaseStudyPage({
               <p className="mt-3 text-base leading-relaxed text-slate-700">{project.before}</p>
             </div>
           </div>
+          <p className="mt-6 text-base leading-relaxed text-slate-700">{project.solution}</p>
         </div>
       </Section>
 
@@ -201,8 +218,43 @@ export default async function CaseStudyPage({
         </div>
       </Section>
 
-      {/* SEO and lead generation */}
+      {/* Design, development, mobile, performance */}
       <Section>
+        <SectionHeading eyebrow="How We'd Build It" title="Design &amp; Development Approach" />
+        <div className="mx-auto mt-12 grid max-w-4xl gap-6 sm:grid-cols-2">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50">
+              <Palette className="h-5 w-5 text-brand-blue" aria-hidden="true" />
+            </div>
+            <h3 className="mt-4 text-base font-semibold text-navy">Design</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">{project.design}</p>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-6">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50">
+              <Code2 className="h-5 w-5 text-brand-blue" aria-hidden="true" />
+            </div>
+            <h3 className="mt-4 text-base font-semibold text-navy">Development</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">{project.development}</p>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-6">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-teal-50">
+              <Smartphone className="h-5 w-5 text-brand-teal" aria-hidden="true" />
+            </div>
+            <h3 className="mt-4 text-base font-semibold text-navy">Mobile Improvements</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">{project.mobileImprovements}</p>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-6">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-teal-50">
+              <Gauge className="h-5 w-5 text-brand-teal" aria-hidden="true" />
+            </div>
+            <h3 className="mt-4 text-base font-semibold text-navy">Performance Improvements</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">{project.performanceImprovements}</p>
+          </div>
+        </div>
+      </Section>
+
+      {/* SEO and lead generation */}
+      <Section tone="surface">
         <SectionHeading eyebrow="Growth Strategy" title="Search Visibility &amp; Lead Generation" />
         <div className="mx-auto mt-12 grid max-w-4xl gap-6 sm:grid-cols-2">
           <div className="rounded-2xl border border-slate-200 bg-white p-6">
@@ -221,6 +273,24 @@ export default async function CaseStudyPage({
           </div>
         </div>
       </Section>
+
+      {/* Results — only shown once real, measured results exist */}
+      {project.metrics.length > 0 ? (
+        <Section>
+          <SectionHeading eyebrow="Results" title="Measured Outcomes" />
+          <div className="mx-auto mt-12 grid max-w-4xl gap-6 sm:grid-cols-3">
+            {project.metrics.map((metric) => (
+              <div
+                key={metric.label}
+                className="rounded-2xl border border-slate-200 bg-white p-6 text-center"
+              >
+                <p className="text-3xl font-bold text-navy">{metric.value}</p>
+                <p className="mt-1.5 text-sm text-slate-600">{metric.label}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+      ) : null}
 
       <CTASection title="Want this level of thought applied to your website?" />
     </>

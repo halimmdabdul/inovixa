@@ -1,5 +1,5 @@
 import { buildMetadata } from "@/lib/seo/metadata";
-import { caseStudies } from "@/lib/data/case-studies";
+import { getCaseStudies } from "@/lib/case-studies";
 import { Section } from "@/components/ui/section";
 import { CaseStudyCard } from "@/components/cards/case-study-card";
 import { CTASection } from "@/components/marketing/cta-section";
@@ -11,7 +11,9 @@ export const metadata = buildMetadata({
   path: "/work",
 });
 
-export default function WorkPage() {
+export default async function WorkPage() {
+  const caseStudies = await getCaseStudies();
+
   return (
     <>
       <Section className="py-16 sm:py-20">
@@ -29,11 +31,17 @@ export default function WorkPage() {
             project. Verified client work will be added only with permission.
           </p>
         </div>
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {caseStudies.map((project) => (
-            <CaseStudyCard key={project.slug} project={project} />
-          ))}
-        </div>
+        {caseStudies.length === 0 ? (
+          <p className="mt-14 text-center text-sm text-slate-500">
+            No case studies published yet — check back soon.
+          </p>
+        ) : (
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {caseStudies.map((project) => (
+              <CaseStudyCard key={project.slug} project={project} />
+            ))}
+          </div>
+        )}
       </Section>
       <CTASection title="Want this level of thought applied to your website?" />
     </>

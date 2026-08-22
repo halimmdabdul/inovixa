@@ -1,11 +1,14 @@
-import { caseStudies } from "@/lib/data/case-studies";
+import { getCaseStudies } from "@/lib/case-studies";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CaseStudyCard } from "@/components/cards/case-study-card";
 import { Button } from "@/components/ui/button";
 
-export function FeaturedWork() {
+export async function FeaturedWork() {
+  const caseStudies = await getCaseStudies();
   const featured = caseStudies.slice(0, 3);
+
+  if (featured.length === 0) return null;
 
   return (
     <Section tone="surface" id="work">

@@ -85,6 +85,11 @@ export interface CaseStudyImprovement {
   after: string;
 }
 
+export interface CaseStudyMetric {
+  label: string;
+  value: string;
+}
+
 export interface CaseStudy {
   slug: string;
   title: string;
@@ -101,11 +106,31 @@ export interface CaseStudy {
   seoSetup: string;
   leadStrategy: string;
   improvements: CaseStudyImprovement[];
-  metrics?: {
-    label: string;
-    value: string;
-  }[];
-  coverImage: string;
+  metrics: CaseStudyMetric[];
+  coverImageUrl: string | null;
+}
+
+export interface CaseStudyRow {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  slug: string;
+  title: string;
+  industry: string;
+  is_concept: boolean;
+  summary: string;
+  problem: string;
+  before: string;
+  solution: string;
+  design: string;
+  development: string;
+  mobile_improvements: string;
+  performance_improvements: string;
+  seo_setup: string;
+  lead_strategy: string;
+  improvements: CaseStudyImprovement[];
+  metrics: CaseStudyMetric[];
+  cover_image_url: string | null;
 }
 
 export interface ClientResult {

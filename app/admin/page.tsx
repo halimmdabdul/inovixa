@@ -33,6 +33,9 @@ export default async function AdminLeadsPage() {
             <Link href="/admin/services" className="text-sm text-slate-500 hover:text-navy">
               Services
             </Link>
+            <Link href="/admin/work" className="text-sm text-slate-500 hover:text-navy">
+              Work
+            </Link>
             <Link href="/admin/blog" className="text-sm text-slate-500 hover:text-navy">
               Blog
             </Link>

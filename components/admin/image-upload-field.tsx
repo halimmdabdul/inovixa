@@ -12,7 +12,7 @@ export function ImageUploadField({
   id,
 }: {
   label: string;
-  folder: "team" | "blog" | "services";
+  folder: "team" | "blog" | "services" | "work";
   value: string;
   onChange: (url: string) => void;
   id: string;

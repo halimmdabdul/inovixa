@@ -5,11 +5,12 @@
 
 -- "media" storage bucket
 --
--- Holds admin-uploaded images: team photos, blog cover images, and service
--- images (see app/actions/upload.ts). Public read so the images work on the
--- public site; only a signed-in admin can upload, replace, or delete files.
--- Uploads are organized under team/, blog/, and services/ path prefixes
--- within this one bucket rather than three separate buckets.
+-- Holds admin-uploaded images: team photos, blog cover images, service
+-- images, and case study cover images (see app/actions/upload.ts). Public
+-- read so the images work on the public site; only a signed-in admin can
+-- upload, replace, or delete files. Uploads are organized under team/,
+-- blog/, services/, and work/ path prefixes within this one bucket rather
+-- than four separate buckets.
 
 insert into storage.buckets (id, name, public)
 values ('media', 'media', true)
@@ -436,6 +437,69 @@ Explain your services in plain language. Not every customer knows the difference
 Ensure the site works flawlessly on mobile. Many roofing inquiries happen from a phone, often right after noticing damage.
 
 A roofing website built around these priorities does far more than look professional. It actively helps turn visitors into booked jobs.', '2026-01-12')
+on conflict (slug) do nothing;
+
+-- Inovixa Digital — case_studies table
+--
+-- Backs the public /work section, managed entirely from /admin/work instead
+-- of the old lib/data/case-studies.ts static file. Full CRUD for
+-- authenticated admins (unlike services) since each case study's slug uses
+-- the dynamic app/(marketing)/work/[slug]/page.tsx route rather than a
+-- literal per-slug folder, so adding or removing a row here doesn't strand
+-- any route. `improvements` and `metrics` are jsonb arrays of objects
+-- (area/before/after, and label/value respectively) rather than separate
+-- tables, since there are only ever a handful per case study.
+
+create table if not exists public.case_studies (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  slug text not null unique,
+  title text not null,
+  industry text not null,
+  is_concept boolean not null default true,
+  summary text not null,
+  problem text not null,
+  before text not null,
+  solution text not null,
+  design text not null,
+  development text not null,
+  mobile_improvements text not null,
+  performance_improvements text not null,
+  seo_setup text not null,
+  lead_strategy text not null,
+  improvements jsonb not null default '[]',
+  metrics jsonb not null default '[]',
+  cover_image_url text
+);
+
+alter table public.case_studies enable row level security;
+
+create policy "Anyone can read case studies"
+  on public.case_studies
+  for select
+  to anon, authenticated
+  using (true);
+
+create policy "Authenticated users can manage case studies"
+  on public.case_studies
+  for all
+  to authenticated
+  using (true)
+  with check (true);
+
+create index if not exists case_studies_created_at_idx on public.case_studies (created_at desc);
+
+-- Seeds the table with the site's original 3 concept projects so migrating
+-- from the static file doesn't empty /work. Safe to run more than once —
+-- existing slugs are left untouched. Cover images start unset (null), so
+-- these three fall back to their existing hand-drawn illustrations (see
+-- components/illustrations/case-study-scenes.tsx) until an admin uploads a
+-- real image for them.
+insert into public.case_studies (slug, title, industry, is_concept, summary, problem, before, solution, design, development, mobile_improvements, performance_improvements, seo_setup, lead_strategy, improvements, metrics) values
+  ('summit-ridge-roofing', 'Summit Ridge Roofing', 'Roofing', true, 'A concept redesign turning a slow, text-heavy roofing site into a fast, mobile-first website built to book estimates.', 'The original concept site was slow, difficult to read on mobile, and gave visitors no clear way to request an estimate.', 'A cluttered homepage with small text, no clear service pages, and a contact form buried at the bottom of the site.', 'A modern one-page-to-multi-page structure that leads visitors straight to services, service areas, and a simple estimate request form.', 'Clean navy and white palette with bold imagery placeholders, large tap-friendly buttons, and clear service categories.', 'Rebuilt with a component-based architecture, optimized images, and semantic HTML for fast, accessible rendering.', 'Redesigned navigation, larger touch targets, and a sticky call button for mobile visitors.', 'Optimized images and minimal JavaScript for fast loading on mobile connections.', 'Structured service pages, local business schema, and optimized titles and descriptions for local roofing searches.', 'A prominent estimate request form and click-to-call button placed above the fold on every page.', '[{"area":"Homepage first impression","before":"A wall of small text with no clear starting point for visitors.","after":"One clear headline and a button to request an estimate, visible immediately."},{"area":"Requesting an estimate","before":"The contact form was buried at the very bottom of the page.","after":"An estimate form and phone number are visible on every page."},{"area":"Mobile experience","before":"Text too small to read comfortably and buttons too small to tap.","after":"Larger text and tap-friendly buttons designed for browsing on a phone."},{"area":"Finding services","before":"Roofing services were listed together in one long paragraph.","after":"Repair, replacement, and storm damage each get their own clear page."},{"area":"Page speed","before":"Slow to load, especially over a mobile connection.","after":"Optimized images and minimal code for fast loading on any connection."},{"area":"Being found in search","before":"No SEO structure, making it hard for Google to understand the site.","after":"Structured pages and local business info to help nearby searches find it."}]'::jsonb, '[]'::jsonb),
+  ('brightview-dental', 'Brightview Dental', 'Dental', true, 'A concept website designed to help a dental clinic build trust online and make booking an appointment effortless.', 'The original concept practice had no website, relying only on a directory listing and word of mouth referrals.', 'No dedicated website. Patients had no way to learn about services or request an appointment online.', 'A warm, professional website introducing the practice, services, and team, with a simple appointment request form.', 'A calm, trustworthy design using soft neutrals with the Inovixa blue accent for calls to action.', 'Built with reusable service and team components to make future updates simple.', 'Mobile-first layout with a persistent call and booking button.', 'Optimized fonts and images for fast load times on mobile networks.', 'Local SEO foundations, service-specific pages, and structured data for a professional service.', 'Clear appointment request CTA repeated across every service page.', '[{"area":"Online presence","before":"No website — just a directory listing and word of mouth.","after":"A dedicated site introducing the practice, team, and services."},{"area":"Booking an appointment","before":"No way to request an appointment online.","after":"A simple appointment request form visible on every page."},{"area":"Mobile experience","before":"Nothing to browse on mobile — there was no site at all.","after":"A mobile-first layout with a persistent call and booking button."},{"area":"Search visibility","before":"Invisible in local search results for nearby patients.","after":"Local SEO foundations so the practice shows up in relevant searches."},{"area":"Building trust","before":"No photos, team information, or service details anywhere online.","after":"Team bios, service pages, and a calm, professional design."}]'::jsonb, '[]'::jsonb),
+  ('harborline-realty', 'Harborline Realty', 'Real Estate', true, 'A concept redesign giving a small real estate team a modern, credible online presence to match larger competitors.', 'The original concept site looked outdated compared to national real estate platforms and lacked a clear agent contact path.', 'Dated design, slow-loading listing pages, and no clear way to contact an individual agent.', 'A modern listings and agent-profile structure with clear contact paths for every property.', 'A premium, editorial-style layout with generous whitespace and a confident typographic hierarchy.', 'Modular listing and agent card components built for easy content updates.', 'Fully responsive listing grids and simplified mobile filtering.', 'Lazy-loaded imagery and optimized layout to reduce load time on listing-heavy pages.', 'Structured data for real estate listings and location-based on-page SEO.', 'Inquiry forms on every listing and agent profile, with a clear path to schedule a viewing.', '[{"area":"First impression","before":"A dated design that looked years behind bigger real estate platforms.","after":"A premium, modern layout that competes with national sites."},{"area":"Finding an agent","before":"No clear way to contact the specific agent behind a listing.","after":"Every listing links to a dedicated agent profile with contact info."},{"area":"Browsing listings","before":"Slow-loading listing pages, especially with several photos.","after":"Lazy-loaded images keep listing pages fast even with more photos."},{"area":"Mobile experience","before":"Listings were hard to browse and filter on a phone.","after":"A fully responsive listing grid with simplified mobile filtering."},{"area":"Requesting a viewing","before":"No inquiry path on individual listing pages.","after":"An inquiry form on every listing and agent profile."}]'::jsonb, '[]'::jsonb)
 on conflict (slug) do nothing;
 
 -- Inovixa Digital — call_bookings table

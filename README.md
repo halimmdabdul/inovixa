@@ -130,14 +130,14 @@ are wired up yet.
 Marketing copy and structured content live in `lib/data/`:
 
 - `industries.ts`, `pricing.ts`, `process.ts`, `problems.ts`, `why-us.ts`,
-  `faqs.ts`, `case-studies.ts`, `testimonials.ts`
+  `faqs.ts`, `testimonials.ts`
 
 Editing these files updates the corresponding pages without touching
 component code. This structure is intentionally CMS-ready — a future
 migration to Sanity, Supabase, or another headless CMS only requires
 swapping how these files are populated, not the components that render them.
 
-Blog posts and services have already made that migration:
+Blog posts, services, and case studies have already made that migration:
 
 - Blog posts are stored in Supabase and fully managed from `/admin/blog`
   (see "Admin Dashboard" below) — add, edit, or delete any post.
@@ -145,16 +145,20 @@ Blog posts and services have already made that migration:
   Care) are also stored in Supabase and editable from `/admin/services` —
   content only, not the row set, since each service's slug is tied 1:1 to a
   literal route folder under `app/(marketing)/services/`.
+- Case studies for `/work` are stored in Supabase and fully managed from
+  `/admin/work` — add, edit, or delete any project. Unlike services, `/work`
+  uses a dynamic `[slug]` route, so adding or removing a case study never
+  strands a route the way it would for services.
 
-Neither requires a code change or redeploy to take effect.
+None of these require a code change or redeploy to take effect.
 
 ## Admin Dashboard
 
 `/admin` is a login-protected dashboard for viewing leads submitted through
 the `/audit` and `/contact` forms, managing the team section, publishing
-blog posts, and editing service content. It's built on Supabase Auth +
-Postgres and does nothing until you connect a Supabase project — until
-then, `/admin` just redirects to a login page that says so.
+blog posts, editing service content, and managing case studies. It's built
+on Supabase Auth + Postgres and does nothing until you connect a Supabase
+project — until then, `/admin` just redirects to a login page that says so.
 
 ### Setup
 
@@ -218,6 +222,14 @@ under `app/(marketing)/services/`. The public pages read through
 If this table hasn't been migrated yet, `/services` and each service page
 render an empty/not-found state rather than crashing — but since these are
 core commercial pages, run the schema before relying on them in production.
+
+`/admin/work` manages the `case_studies` table with full CRUD, same as
+blog. The public pages read through `lib/case-studies.ts` (same
+`unstable_cache` + `updateTag("case-studies")` pattern). Each case study's
+"Design," "Development," "Mobile Improvements," and "Performance
+Improvements" fields render in their own section on the project's page, and
+an optional "Results" section only appears once real, measured metrics are
+added — never fabricate a number here.
 
 ## Notes
 

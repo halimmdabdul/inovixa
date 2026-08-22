@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/constants/site";
 import { getServices } from "@/lib/services";
-import { caseStudies } from "@/lib/data/case-studies";
+import { getCaseStudies } from "@/lib/case-studies";
 import { getBlogPosts } from "@/lib/blog";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -30,6 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${siteConfig.url}/services/${service.slug}`,
   }));
 
+  const caseStudies = await getCaseStudies();
   const workRoutes = caseStudies.map((project) => ({
     url: `${siteConfig.url}/work/${project.slug}`,
   }));

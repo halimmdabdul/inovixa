@@ -18,7 +18,7 @@ const ALLOWED_TYPES: Record<string, string> = {
 };
 
 const MAX_BYTES = 5 * 1024 * 1024;
-const ALLOWED_FOLDERS = ["team", "blog", "services"] as const;
+const ALLOWED_FOLDERS = ["team", "blog", "services", "work"] as const;
 type Folder = (typeof ALLOWED_FOLDERS)[number];
 
 /**

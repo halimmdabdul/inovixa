@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Check, ChevronRight, ShieldCheck } from "lucide-react";
 import type { Service } from "@/types";
-import { services } from "@/lib/data/services";
+import { getServices } from "@/lib/services";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
@@ -11,10 +11,11 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd, faqJsonLd, serviceJsonLd } from "@/lib/seo/jsonld";
 import { serviceScenes } from "@/components/illustrations/service-scenes";
 
-export function ServiceDetail({ service }: { service: Service }) {
+export async function ServiceDetail({ service }: { service: Service }) {
   const Scene = serviceScenes[service.slug];
   const path = `/services/${service.slug}`;
-  const relatedServices = services.filter((item) => item.slug !== service.slug);
+  const allServices = await getServices();
+  const relatedServices = allServices.filter((item) => item.slug !== service.slug);
 
   return (
     <>

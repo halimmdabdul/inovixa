@@ -6,10 +6,24 @@ export interface Service {
   shortName: string;
   description: string;
   longDescription: string;
-  icon: LucideIcon;
   ctaLabel: string;
   features: string[];
   idealFor: string[];
+  faqs: FAQItem[];
+}
+
+export interface ServiceRow {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  slug: string;
+  name: string;
+  short_name: string;
+  description: string;
+  long_description: string;
+  cta_label: string;
+  features: string[];
+  ideal_for: string[];
   faqs: FAQItem[];
 }
 

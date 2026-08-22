@@ -1,4 +1,4 @@
-import { services } from "@/lib/data/services";
+import { getServices } from "@/lib/services";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ServiceCard } from "@/components/cards/service-card";
@@ -12,7 +12,9 @@ const customSolutions = [
   "Internal dashboards",
 ];
 
-export function ServicesSection() {
+export async function ServicesSection() {
+  const services = await getServices();
+
   return (
     <Section id="services">
       <SectionHeading

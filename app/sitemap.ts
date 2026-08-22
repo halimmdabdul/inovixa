@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/constants/site";
-import { services } from "@/lib/data/services";
+import { getServices } from "@/lib/services";
 import { caseStudies } from "@/lib/data/case-studies";
 import { getBlogPosts } from "@/lib/blog";
 
@@ -25,6 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${siteConfig.url}${path}`,
   }));
 
+  const services = await getServices();
   const serviceRoutes = services.map((service) => ({
     url: `${siteConfig.url}/services/${service.slug}`,
   }));

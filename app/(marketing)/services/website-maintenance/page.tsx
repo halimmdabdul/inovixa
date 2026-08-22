@@ -1,20 +1,27 @@
+import { notFound } from "next/navigation";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { getServiceBySlug } from "@/lib/data/services";
+import { getServiceBySlug } from "@/lib/services";
 import { ServiceDetail } from "@/components/marketing/service-detail";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CTASection } from "@/components/marketing/cta-section";
 import { carePlans } from "@/lib/data/pricing";
 
-const service = getServiceBySlug("website-maintenance")!;
+export async function generateMetadata() {
+  const service = await getServiceBySlug("website-maintenance");
+  if (!service) return buildMetadata({ title: "Services", description: "Services", path: "/services" });
 
-export const metadata = buildMetadata({
-  title: service.name,
-  description: service.description,
-  path: "/services/website-maintenance",
-});
+  return buildMetadata({
+    title: service.name,
+    description: service.description,
+    path: "/services/website-maintenance",
+  });
+}
 
-export default function WebsiteMaintenancePage() {
+export default async function WebsiteMaintenancePage() {
+  const service = await getServiceBySlug("website-maintenance");
+  if (!service) notFound();
+
   return (
     <>
       <ServiceDetail service={service} />

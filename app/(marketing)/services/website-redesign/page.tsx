@@ -1,17 +1,24 @@
+import { notFound } from "next/navigation";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { getServiceBySlug } from "@/lib/data/services";
+import { getServiceBySlug } from "@/lib/services";
 import { ServiceDetail } from "@/components/marketing/service-detail";
 import { CTASection } from "@/components/marketing/cta-section";
 
-const service = getServiceBySlug("website-redesign")!;
+export async function generateMetadata() {
+  const service = await getServiceBySlug("website-redesign");
+  if (!service) return buildMetadata({ title: "Services", description: "Services", path: "/services" });
 
-export const metadata = buildMetadata({
-  title: service.name,
-  description: service.description,
-  path: "/services/website-redesign",
-});
+  return buildMetadata({
+    title: service.name,
+    description: service.description,
+    path: "/services/website-redesign",
+  });
+}
 
-export default function WebsiteRedesignPage() {
+export default async function WebsiteRedesignPage() {
+  const service = await getServiceBySlug("website-redesign");
+  if (!service) notFound();
+
   return (
     <>
       <ServiceDetail service={service} />

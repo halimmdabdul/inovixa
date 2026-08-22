@@ -1,5 +1,5 @@
 import { buildMetadata } from "@/lib/seo/metadata";
-import { services } from "@/lib/data/services";
+import { getServices } from "@/lib/services";
 import { Section } from "@/components/ui/section";
 import { ServiceFeatureRow } from "@/components/marketing/service-feature-row";
 import { CTASection } from "@/components/marketing/cta-section";
@@ -11,7 +11,9 @@ export const metadata = buildMetadata({
   path: "/services",
 });
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const services = await getServices();
+
   return (
     <>
       <Section className="py-16 sm:py-20">

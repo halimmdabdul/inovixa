@@ -1,17 +1,24 @@
+import { notFound } from "next/navigation";
 import { buildMetadata } from "@/lib/seo/metadata";
-import { getServiceBySlug } from "@/lib/data/services";
+import { getServiceBySlug } from "@/lib/services";
 import { ServiceDetail } from "@/components/marketing/service-detail";
 import { CTASection } from "@/components/marketing/cta-section";
 
-const service = getServiceBySlug("local-seo")!;
+export async function generateMetadata() {
+  const service = await getServiceBySlug("local-seo");
+  if (!service) return buildMetadata({ title: "Services", description: "Services", path: "/services" });
 
-export const metadata = buildMetadata({
-  title: service.name,
-  description: service.description,
-  path: "/services/local-seo",
-});
+  return buildMetadata({
+    title: service.name,
+    description: service.description,
+    path: "/services/local-seo",
+  });
+}
 
-export default function LocalSeoPage() {
+export default async function LocalSeoPage() {
+  const service = await getServiceBySlug("local-seo");
+  if (!service) notFound();
+
   return (
     <>
       <ServiceDetail service={service} />

@@ -129,26 +129,32 @@ are wired up yet.
 
 Marketing copy and structured content live in `lib/data/`:
 
-- `services.ts`, `industries.ts`, `pricing.ts`, `process.ts`, `problems.ts`,
-  `why-us.ts`, `faqs.ts`, `case-studies.ts`, `testimonials.ts`
+- `industries.ts`, `pricing.ts`, `process.ts`, `problems.ts`, `why-us.ts`,
+  `faqs.ts`, `case-studies.ts`, `testimonials.ts`
 
 Editing these files updates the corresponding pages without touching
 component code. This structure is intentionally CMS-ready — a future
 migration to Sanity, Supabase, or another headless CMS only requires
 swapping how these files are populated, not the components that render them.
 
-Blog posts are the first piece to actually make that migration: they're
-stored in Supabase and managed from `/admin/blog` (see "Admin Dashboard"
-below) instead of a static file, so publishing or editing an article
-doesn't require a code change or redeploy.
+Blog posts and services have already made that migration:
+
+- Blog posts are stored in Supabase and fully managed from `/admin/blog`
+  (see "Admin Dashboard" below) — add, edit, or delete any post.
+- The four services (Website Redesign, New Websites, Local SEO, Website
+  Care) are also stored in Supabase and editable from `/admin/services` —
+  content only, not the row set, since each service's slug is tied 1:1 to a
+  literal route folder under `app/(marketing)/services/`.
+
+Neither requires a code change or redeploy to take effect.
 
 ## Admin Dashboard
 
 `/admin` is a login-protected dashboard for viewing leads submitted through
-the `/audit` and `/contact` forms, managing the team section, and publishing
-blog posts. It's built on Supabase Auth + Postgres and does nothing until
-you connect a Supabase project — until then, `/admin` just redirects to a
-login page that says so.
+the `/audit` and `/contact` forms, managing the team section, publishing
+blog posts, and editing service content. It's built on Supabase Auth +
+Postgres and does nothing until you connect a Supabase project — until
+then, `/admin` just redirects to a login page that says so.
 
 ### Setup
 
@@ -203,6 +209,15 @@ public `/blog` pages read through `lib/blog.ts`, which caches reads with
 Next's `unstable_cache` and is invalidated via `updateTag("blog-posts")`
 whenever a post is created, edited, or deleted, so changes show up without a
 redeploy. Reading time is computed from word count rather than stored.
+
+`/admin/services` works the same way but with a narrower RLS policy —
+authenticated users can only `UPDATE` the `services` table, not insert or
+delete, because its four rows are hardcoded 1:1 to the literal route folders
+under `app/(marketing)/services/`. The public pages read through
+`lib/services.ts` (same `unstable_cache` + `updateTag("services")` pattern).
+If this table hasn't been migrated yet, `/services` and each service page
+render an empty/not-found state rather than crashing — but since these are
+core commercial pages, run the schema before relying on them in production.
 
 ## Notes
 
